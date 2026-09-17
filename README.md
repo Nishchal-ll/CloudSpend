@@ -14,10 +14,10 @@
 ## 📸 Application Screenshots
 
 ### 1. Landing Page
-![CloudSpend Landing Page](https://raw.githubusercontent.com/Nishchal-ll/CloudSpend/main/image1.png)
+![CloudSpend Landing Page](https://github.com/Nishchal-ll/CloudSpend/blob/main/image1.png)
 
 ### 2. Executive Dashboard (100% Full-Width)
-![CloudSpend Dashboard](https://raw.githubusercontent.com/Nishchal-ll/CloudSpend/main/image2.png)
+![CloudSpend Dashboard](https://github.com/Nishchal-ll/CloudSpend/blob/main/image2.png)
 
 ---
 
