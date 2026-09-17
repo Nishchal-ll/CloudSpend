@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body class="dashboard-body">
     <div class="sidebar-layout">
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-top">
                 <a href="/dashboard" class="sidebar-brand">
-                    <img src="/static/images/logo.png" alt="CloudSpend" class="brand-logo-img" onerror="this.style.display='none'">
+                    <img src="/static/images/logo.png" alt="CloudSpend" class="brand-logo-img"
+                        onerror="this.style.display='none'">
                     <div>
                         <span class="brand-title">CloudSpend</span>
                         <div class="brand-badge">Azure Edition</div>
@@ -39,7 +44,8 @@
                         <i class="fa-solid fa-plus"></i>
                         <span>Add Expense</span>
                     </button>
-                    <button type="button" class="nav-item btn-nav-action" onclick="openBudgetModal('{{ .summary.MonthlyBudget }}')">
+                    <button type="button" class="nav-item btn-nav-action"
+                        onclick="openBudgetModal('{{ .summary.MonthlyBudget }}')">
                         <i class="fa-solid fa-sliders"></i>
                         <span>Adjust Budget</span>
                     </button>
@@ -54,7 +60,8 @@
                     </div>
                     <div class="user-text">
                         <div class="user-name">{{ if .user }}{{ .user.Name }}{{ else }}Admin User{{ end }}</div>
-                        <div class="user-email">{{ if .user }}{{ .user.Email }}{{ else }}admin@example.com{{ end }}</div>
+                        <div class="user-email">{{ if .user }}{{ .user.Email }}{{ else }}admin@example.com{{ end }}
+                        </div>
                     </div>
                 </div>
                 <a href="/logout" class="btn-logout" title="Sign out">
@@ -106,13 +113,17 @@
                     </div>
                     <div class="summary-val">{{ printf "%.1f" .summary.PercentUsed }}%</div>
                     <div class="summary-meta" style="justify-content:space-between;margin-bottom:0.4rem;">
-                        <span class="badge {{ if gt .summary.PercentUsed 85.0 }}badge-danger{{ else if gt .summary.PercentUsed 60.0 }}badge-warning{{ else }}badge-success{{ end }}">
+                        <span
+                            class="badge {{ if gt .summary.PercentUsed 85.0 }}badge-danger{{ else if gt .summary.PercentUsed 60.0 }}badge-warning{{ else }}badge-success{{ end }}">
                             {{ if lt .summary.RemainingBudget 0.0 }}Over Limit{{ else }}Healthy{{ end }}
                         </span>
-                        <span class="text-muted font-mono">${{ printf "%.0f" .summary.TotalSpent }} of ${{ printf "%.0f" .summary.MonthlyBudget }}</span>
+                        <span class="text-muted font-mono">${{ printf "%.0f" .summary.TotalSpent }} of ${{ printf "%.0f"
+                            .summary.MonthlyBudget }}</span>
                     </div>
                     <div class="progress-track">
-                        <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%;"></div>
+                        <div class="progress-fill"
+                            style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%;">
+                        </div>
                     </div>
                 </div>
 
@@ -122,7 +133,8 @@
                         <span class="summary-label">Active Services & Providers</span>
                         <i class="fa-solid fa-cloud summary-icon"></i>
                     </div>
-                    <div class="summary-val">{{ .summary.TotalExpensesCount }} <span style="font-size:1.1rem;font-weight:normal;color:var(--muted);">items</span></div>
+                    <div class="summary-val">{{ .summary.TotalExpensesCount }} <span
+                            style="font-size:1.1rem;font-weight:normal;color:var(--muted);">items</span></div>
                     <div class="summary-meta" style="gap:0.85rem;color:var(--muted);">
                         <span><i class="fa-brands fa-aws" style="color:#f59e0b;"></i> AWS</span>
                         <span><i class="fa-brands fa-microsoft" style="color:#0284c7;"></i> Azure</span>
@@ -138,7 +150,8 @@
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
                         <div>
                             <div class="section-title">Spending by Category</div>
-                            <div class="section-desc" style="margin-bottom:0;">Cost distribution across cloud infrastructure domains</div>
+                            <div class="section-desc" style="margin-bottom:0;">Cost distribution across cloud
+                                infrastructure domains</div>
                         </div>
                         <span class="badge badge-neutral">{{ len .summary.CategoryBreakdown }} Categories</span>
                     </div>
@@ -146,19 +159,20 @@
                     <!-- Category Bars List -->
                     <div class="category-bars-list">
                         {{ if .summary.CategoryBreakdown }}
-                            {{ range .summary.CategoryBreakdown }}
-                            <div class="category-bar-row">
-                                <div class="category-bar-head">
-                                    <span class="category-bar-name">{{ .Category }} ({{ .Count }})</span>
-                                    <span class="category-bar-cost">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f" .Percentage }}%</span>
-                                </div>
-                                <div class="progress-track">
-                                    <div class="progress-fill" style="width: {{ .Percentage }}%;"></div>
-                                </div>
+                        {{ range .summary.CategoryBreakdown }}
+                        <div class="category-bar-row">
+                            <div class="category-bar-head">
+                                <span class="category-bar-name">{{ .Category }} ({{ .Count }})</span>
+                                <span class="category-bar-cost">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f"
+                                    .Percentage }}%</span>
                             </div>
-                            {{ end }}
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: {{ .Percentage }}%;"></div>
+                            </div>
+                        </div>
+                        {{ end }}
                         {{ else }}
-                            <p class="text-muted text-sm">No categorized expenses recorded yet.</p>
+                        <p class="text-muted text-sm">No categorized expenses recorded yet.</p>
                         {{ end }}
                     </div>
                 </div>
@@ -171,10 +185,14 @@
                     <!-- Donut Chart -->
                     <div class="donut-wrapper">
                         <svg viewBox="0 0 36 36" class="donut-svg">
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f3f4f6" stroke-width="4.5"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-dasharray="60 100" stroke-linecap="round"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f87171" stroke-width="4.5" stroke-dasharray="25 100" stroke-dashoffset="-60" stroke-linecap="round"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#fca5a5" stroke-width="4.5" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f3f4f6" stroke-width="4.5">
+                            </circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#dc2626" stroke-width="4.5"
+                                stroke-dasharray="60 100" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f87171" stroke-width="4.5"
+                                stroke-dasharray="25 100" stroke-dashoffset="-60" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#fca5a5" stroke-width="4.5"
+                                stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-linecap="round"></circle>
                         </svg>
                         <div class="donut-center">
                             <span class="donut-val">100%</span>
@@ -185,24 +203,27 @@
                     <!-- Provider List Items -->
                     <div class="provider-list-items">
                         {{ if .summary.ProviderBreakdown }}
-                            {{ range .summary.ProviderBreakdown }}
-                            <div class="provider-list-row">
-                                <div class="provider-list-left">
-                                    {{ if eq .Provider "AWS" }}<i class="fa-brands fa-aws" style="color:#f59e0b;"></i>
-                                    {{ else if eq .Provider "Azure" }}<i class="fa-brands fa-microsoft" style="color:#0284c7;"></i>
-                                    {{ else if eq .Provider "GCP" }}<i class="fa-brands fa-google" style="color:#3b82f6;"></i>
-                                    {{ else if eq .Provider "GitHub" }}<i class="fa-brands fa-github"></i>
-                                    {{ else }}<i class="fa-solid fa-server text-accent"></i>
-                                    {{ end }}
-                                    <span>{{ .Provider }}</span>
-                                </div>
-                                <div class="provider-list-right">
-                                    ${{ printf "%.2f" .Total }} <span class="text-muted text-xs" style="font-weight:normal;">({{ printf "%.1f" .Percentage }}%)</span>
-                                </div>
+                        {{ range .summary.ProviderBreakdown }}
+                        <div class="provider-list-row">
+                            <div class="provider-list-left">
+                                {{ if eq .Provider "AWS" }}<i class="fa-brands fa-aws" style="color:#f59e0b;"></i>
+                                {{ else if eq .Provider "Azure" }}<i class="fa-brands fa-microsoft"
+                                    style="color:#0284c7;"></i>
+                                {{ else if eq .Provider "GCP" }}<i class="fa-brands fa-google"
+                                    style="color:#3b82f6;"></i>
+                                {{ else if eq .Provider "GitHub" }}<i class="fa-brands fa-github"></i>
+                                {{ else }}<i class="fa-solid fa-server text-accent"></i>
+                                {{ end }}
+                                <span>{{ .Provider }}</span>
                             </div>
-                            {{ end }}
+                            <div class="provider-list-right">
+                                ${{ printf "%.2f" .Total }} <span class="text-muted text-xs"
+                                    style="font-weight:normal;">({{ printf "%.1f" .Percentage }}%)</span>
+                            </div>
+                        </div>
+                        {{ end }}
                         {{ else }}
-                            <p class="text-muted text-sm">No provider data recorded yet.</p>
+                        <p class="text-muted text-sm">No provider data recorded yet.</p>
                         {{ end }}
                     </div>
                 </div>
@@ -232,29 +253,30 @@
                         </thead>
                         <tbody>
                             {{ if .summary.RecentExpenses }}
-                                {{ range .summary.RecentExpenses }}
-                                <tr>
-                                    <td>
-                                        <div class="service-title">{{ .Title }}</div>
-                                        {{ if .Description }}<div class="service-note">{{ .Description }}</div>{{ end }}
-                                    </td>
-                                    <td><span class="prov-tag">{{ .Provider }}</span></td>
-                                    <td><span class="tag-pill">{{ .Category }}</span></td>
-                                    <td class="font-mono text-muted text-sm">{{ .ExpenseDate }}</td>
-                                    <td class="cost-amount font-mono">${{ printf "%.2f" .Amount }}</td>
-                                    <td style="text-align:right;">
-                                        <a href="/expenses?search={{ .Title }}" class="btn-action" title="View details">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                {{ end }}
+                            {{ range .summary.RecentExpenses }}
+                            <tr>
+                                <td>
+                                    <div class="service-title">{{ .Title }}</div>
+                                    {{ if .Description }}<div class="service-note">{{ .Description }}</div>{{ end }}
+                                </td>
+                                <td><span class="prov-tag">{{ .Provider }}</span></td>
+                                <td><span class="tag-pill">{{ .Category }}</span></td>
+                                <td class="font-mono text-muted text-sm">{{ .ExpenseDate }}</td>
+                                <td class="cost-amount font-mono">${{ printf "%.2f" .Amount }}</td>
+                                <td style="text-align:right;">
+                                    <a href="/expenses?search={{ .Title }}" class="btn-action" title="View details">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {{ end }}
                             {{ else }}
-                                <tr>
-                                    <td colspan="6" style="text-align:center;color:var(--muted);padding:2rem;">
-                                        No expenses recorded yet. Click <strong>Add Expense</strong> to add your first resource.
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="6" style="text-align:center;color:var(--muted);padding:2rem;">
+                                    No expenses recorded yet. Click <strong>Add Expense</strong> to add your first
+                                    resource.
+                                </td>
+                            </tr>
                             {{ end }}
                         </tbody>
                     </table>
@@ -275,7 +297,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label" for="expenseTitle">Resource / Service Name *</label>
-                        <input type="text" id="expenseTitle" class="form-input" placeholder="e.g. Azure App Service Linux B1" required>
+                        <input type="text" id="expenseTitle" class="form-input"
+                            placeholder="e.g. Azure App Service Linux B1" required>
                     </div>
 
                     <div class="form-grid">
@@ -310,7 +333,8 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label" for="expenseAmount">Cost ($ USD) *</label>
-                            <input type="number" id="expenseAmount" class="form-input" step="0.01" min="0.01" placeholder="45.00" required>
+                            <input type="number" id="expenseAmount" class="form-input" step="0.01" min="0.01"
+                                placeholder="45.00" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="expenseDate">Billing Date *</label>
@@ -320,7 +344,8 @@
 
                     <div class="form-group" style="margin-bottom:0;">
                         <label class="form-label" for="expenseDesc">Description / Note</label>
-                        <textarea id="expenseDesc" class="form-textarea" rows="2" placeholder="Environment details, cluster ID, purpose..."></textarea>
+                        <textarea id="expenseDesc" class="form-textarea" rows="2"
+                            placeholder="Environment details, cluster ID, purpose..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -331,31 +356,12 @@
         </div>
     </div>
 
-    <!-- Adjust Budget Modal -->
-    <div id="budgetModal" class="modal-overlay hidden">
-        <div class="modal-box" style="max-width:400px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Adjust Monthly Budget</h3>
-                <button type="button" class="close-btn" onclick="closeBudgetModal()">&times;</button>
-            </div>
-            <form id="budgetForm" onsubmit="handleBudgetSubmit(event)">
-                <div class="modal-body">
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label class="form-label" for="budgetInput">Monthly Budget Limit ($ USD) *</label>
-                        <input type="number" id="budgetInput" class="form-input" step="50" min="10" placeholder="5000" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-ghost" onclick="closeBudgetModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Budget</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Toast Notifications -->
     <div id="toastContainer" class="toast-box"></div>
 
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>
