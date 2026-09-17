@@ -16,9 +16,7 @@
         <aside class="sidebar">
             <div class="sidebar-top">
                 <a href="/dashboard" class="sidebar-brand">
-                    <div class="brand-icon">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
+                    <img src="/static/images/logo.png" alt="CloudSpend" class="brand-logo-img" onerror="this.style.display='none'">
                     <div>
                         <span class="brand-title">CloudSpend</span>
                         <div class="brand-badge">Azure Edition</div>
@@ -65,7 +63,7 @@
             </div>
         </aside>
 
-        <!-- MAIN VIEWPORT -->
+        <!-- MAIN VIEWPORT (100% FULL WIDTH) -->
         <main class="main-viewport">
             <!-- Header Bar -->
             <header class="content-header">
@@ -83,7 +81,7 @@
                 </div>
             </header>
 
-            <!-- 3 TOP SUMMARY KPI CARDS (Matching ui.html) -->
+            <!-- 3 TOP SUMMARY KPI CARDS (Full Width Grid) -->
             <div class="summary-kpi-grid">
                 <!-- Card 1: Monthly Spend -->
                 <div class="card summary-card">
@@ -114,7 +112,7 @@
                         <span class="text-muted font-mono">${{ printf "%.0f" .summary.TotalSpent }} of ${{ printf "%.0f" .summary.MonthlyBudget }}</span>
                     </div>
                     <div class="progress-track">
-                        <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%; {{ if gt .summary.PercentUsed 85.0 }}background:var(--danger);{{ end }}"></div>
+                        <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%;"></div>
                     </div>
                 </div>
 
@@ -124,8 +122,8 @@
                         <span class="summary-label">Active Services & Providers</span>
                         <i class="fa-solid fa-cloud summary-icon"></i>
                     </div>
-                    <div class="summary-val">{{ .summary.TotalExpensesCount }} <span style="font-size:1rem;font-weight:normal;color:var(--muted);">items</span></div>
-                    <div class="summary-meta" style="gap:0.75rem;color:var(--muted);">
+                    <div class="summary-val">{{ .summary.TotalExpensesCount }} <span style="font-size:1.1rem;font-weight:normal;color:var(--muted);">items</span></div>
+                    <div class="summary-meta" style="gap:0.85rem;color:var(--muted);">
                         <span><i class="fa-brands fa-aws" style="color:#f59e0b;"></i> AWS</span>
                         <span><i class="fa-brands fa-microsoft" style="color:#0284c7;"></i> Azure</span>
                         <span><i class="fa-brands fa-google" style="color:#3b82f6;"></i> GCP</span>
@@ -135,7 +133,7 @@
 
             <!-- MIDDLE ANALYTICS ROW -->
             <div class="analytics-row">
-                <!-- Left Card: Spending by Category & Breakdown -->
+                <!-- Left Card: Spending by Category -->
                 <div class="card">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
                         <div>
@@ -174,9 +172,9 @@
                     <div class="donut-wrapper">
                         <svg viewBox="0 0 36 36" class="donut-svg">
                             <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f3f4f6" stroke-width="4.5"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#16a34a" stroke-width="4.5" stroke-dasharray="60 100" stroke-linecap="round"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#22c55e" stroke-width="4.5" stroke-dasharray="25 100" stroke-dashoffset="-60" stroke-linecap="round"></circle>
-                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#86efac" stroke-width="4.5" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-dasharray="60 100" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f87171" stroke-width="4.5" stroke-dasharray="25 100" stroke-dashoffset="-60" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#fca5a5" stroke-width="4.5" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-linecap="round"></circle>
                         </svg>
                         <div class="donut-center">
                             <span class="donut-val">100%</span>

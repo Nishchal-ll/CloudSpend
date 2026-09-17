@@ -36,3 +36,7 @@ vendor/
 *.swo
 *~
 .DS_Store
+
+# Air live reload artifacts
+tmp/
+build-errors.log

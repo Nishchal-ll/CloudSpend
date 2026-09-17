@@ -1,0 +1,16 @@
+FROM golang:alpine
+
+WORKDIR /app
+
+# Install git, ca-certificates, tzdata, and Air live-reloader
+RUN apk add --no-cache git ca-certificates tzdata && \
+    go install github.com/air-verse/air@latest
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["air", "-c", ".air.toml"]
