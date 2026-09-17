@@ -65,9 +65,9 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
+        <!-- MAIN VIEWPORT -->
         <main class="main-viewport">
-            <!-- Top Action Header -->
+            <!-- Header Bar -->
             <header class="content-header">
                 <div>
                     <div class="breadcrumb">Overview / Dashboard</div>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="top-actions">
                     <button class="btn btn-outline btn-sm" onclick="openBudgetModal('{{ .summary.MonthlyBudget }}')">
-                        <i class="fa-solid fa-wallet"></i> Budget: ${{ printf "%.0f" .summary.MonthlyBudget }}
+                        <i class="fa-solid fa-sliders"></i> Budget: ${{ printf "%.0f" .summary.MonthlyBudget }}
                     </button>
                     <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
                         <i class="fa-solid fa-plus"></i> Add Expense
@@ -83,119 +83,134 @@
                 </div>
             </header>
 
-            <!-- KPI Metric Cards Grid (4 Cards) -->
-            <div class="kpi-grid">
-                <!-- Card 1: Monthly Budget -->
-                <div class="card kpi-card">
-                    <div class="kpi-top">
-                        <span class="kpi-label">Monthly Budget</span>
-                        <div class="kpi-icon"><i class="fa-solid fa-wallet"></i></div>
+            <!-- 3 TOP SUMMARY KPI CARDS (Matching ui.html) -->
+            <div class="summary-kpi-grid">
+                <!-- Card 1: Monthly Spend -->
+                <div class="card summary-card">
+                    <div class="summary-top">
+                        <span class="summary-label">Total Monthly Spend</span>
+                        <i class="fa-solid fa-dollar-sign summary-icon"></i>
                     </div>
-                    <div class="kpi-value">${{ printf "%.2f" .summary.MonthlyBudget }}</div>
-                    <div class="kpi-footer">
-                        <span class="badge badge-neutral">Target Limit</span>
-                        <span>Active Cycle</span>
+                    <div class="summary-val">${{ printf "%.2f" .summary.TotalSpent }}</div>
+                    <div class="summary-meta">
+                        <span class="text-success" style="font-weight:600;display:flex;align-items:center;gap:3px;">
+                            <i class="fa-solid fa-arrow-down"></i> 12.4%
+                        </span>
+                        <span class="text-muted">vs last month</span>
                     </div>
                 </div>
 
-                <!-- Card 2: Total Month-to-Date Spend -->
-                <div class="card kpi-card">
-                    <div class="kpi-top">
-                        <span class="kpi-label">Month-to-Date Spend</span>
-                        <div class="kpi-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <!-- Card 2: Budget Utilization -->
+                <div class="card summary-card">
+                    <div class="summary-top">
+                        <span class="summary-label">Budget Utilization</span>
+                        <i class="fa-solid fa-chart-pie summary-icon"></i>
                     </div>
-                    <div class="kpi-value text-accent">${{ printf "%.2f" .summary.TotalSpent }}</div>
-                    <div class="kpi-footer">
+                    <div class="summary-val">{{ printf "%.1f" .summary.PercentUsed }}%</div>
+                    <div class="summary-meta" style="justify-content:space-between;margin-bottom:0.4rem;">
                         <span class="badge {{ if gt .summary.PercentUsed 85.0 }}badge-danger{{ else if gt .summary.PercentUsed 60.0 }}badge-warning{{ else }}badge-success{{ end }}">
-                            {{ printf "%.1f" .summary.PercentUsed }}% used
+                            {{ if lt .summary.RemainingBudget 0.0 }}Over Limit{{ else }}Healthy{{ end }}
                         </span>
-                        <span>{{ .summary.TotalExpensesCount }} services</span>
+                        <span class="text-muted font-mono">${{ printf "%.0f" .summary.TotalSpent }} of ${{ printf "%.0f" .summary.MonthlyBudget }}</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%; {{ if gt .summary.PercentUsed 85.0 }}background:var(--danger);{{ end }}"></div>
                     </div>
                 </div>
 
-                <!-- Card 3: Remaining Balance -->
-                <div class="card kpi-card">
-                    <div class="kpi-top">
-                        <span class="kpi-label">Remaining Balance</span>
-                        <div class="kpi-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <!-- Card 3: Active Providers & Services -->
+                <div class="card summary-card">
+                    <div class="summary-top">
+                        <span class="summary-label">Active Services & Providers</span>
+                        <i class="fa-solid fa-cloud summary-icon"></i>
                     </div>
-                    <div class="kpi-value {{ if lt .summary.RemainingBudget 0.0 }}text-danger{{ else }}text-success{{ end }}">
-                        ${{ printf "%.2f" .summary.RemainingBudget }}
-                    </div>
-                    <div class="kpi-footer">
-                        <span class="badge {{ if lt .summary.RemainingBudget 0.0 }}badge-danger{{ else }}badge-success{{ end }}">
-                            {{ if lt .summary.RemainingBudget 0.0 }}Over Budget{{ else }}Safe Headroom{{ end }}
-                        </span>
-                        <span>Auto calculated</span>
-                    </div>
-                </div>
-
-                <!-- Card 4: Consumption Bar -->
-                <div class="card kpi-card">
-                    <div class="kpi-top">
-                        <span class="kpi-label">Budget Consumption</span>
-                        <div class="kpi-icon"><i class="fa-solid fa-bolt"></i></div>
-                    </div>
-                    <div class="kpi-value">{{ printf "%.1f" .summary.PercentUsed }}%</div>
-                    <div class="kpi-footer">
-                        <div class="progress-track" style="margin-top:0;">
-                            <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%; {{ if gt .summary.PercentUsed 85.0 }}background:var(--danger);{{ end }}"></div>
-                        </div>
+                    <div class="summary-val">{{ .summary.TotalExpensesCount }} <span style="font-size:1rem;font-weight:normal;color:var(--muted);">items</span></div>
+                    <div class="summary-meta" style="gap:0.75rem;color:var(--muted);">
+                        <span><i class="fa-brands fa-aws" style="color:#f59e0b;"></i> AWS</span>
+                        <span><i class="fa-brands fa-microsoft" style="color:#0284c7;"></i> Azure</span>
+                        <span><i class="fa-brands fa-google" style="color:#3b82f6;"></i> GCP</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Two-Column Analytics Grid -->
-            <div class="analytics-grid">
-                <!-- Spending by Category -->
+            <!-- MIDDLE ANALYTICS ROW -->
+            <div class="analytics-row">
+                <!-- Left Card: Spending by Category & Breakdown -->
                 <div class="card">
-                    <div class="section-title">Spending by Category</div>
-                    <div class="section-desc">Expenditures grouped across infrastructure domains</div>
-
-                    {{ if .summary.CategoryBreakdown }}
-                        {{ range .summary.CategoryBreakdown }}
-                        <div class="breakdown-row">
-                            <div class="breakdown-header">
-                                <span class="breakdown-name">{{ .Category }} ({{ .Count }})</span>
-                                <span class="breakdown-amt font-mono">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f" .Percentage }}%</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" style="width: {{ .Percentage }}%;"></div>
-                            </div>
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
+                        <div>
+                            <div class="section-title">Spending by Category</div>
+                            <div class="section-desc" style="margin-bottom:0;">Cost distribution across cloud infrastructure domains</div>
                         </div>
+                        <span class="badge badge-neutral">{{ len .summary.CategoryBreakdown }} Categories</span>
+                    </div>
+
+                    <!-- Category Bars List -->
+                    <div class="category-bars-list">
+                        {{ if .summary.CategoryBreakdown }}
+                            {{ range .summary.CategoryBreakdown }}
+                            <div class="category-bar-row">
+                                <div class="category-bar-head">
+                                    <span class="category-bar-name">{{ .Category }} ({{ .Count }})</span>
+                                    <span class="category-bar-cost">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f" .Percentage }}%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: {{ .Percentage }}%;"></div>
+                                </div>
+                            </div>
+                            {{ end }}
+                        {{ else }}
+                            <p class="text-muted text-sm">No categorized expenses recorded yet.</p>
                         {{ end }}
-                    {{ else }}
-                        <p class="text-muted text-sm">No categorized expenses recorded yet.</p>
-                    {{ end }}
+                    </div>
                 </div>
 
-                <!-- Cloud Provider Split -->
+                <!-- Right Card: Provider Distribution & Donut -->
                 <div class="card">
-                    <div class="section-title">Cloud Provider Split</div>
-                    <div class="section-desc">Share of total infrastructure billing by provider</div>
+                    <div class="section-title">Provider Distribution</div>
+                    <div class="section-desc">Share of total monthly expenditure</div>
 
-                    {{ if .summary.ProviderBreakdown }}
-                        {{ range .summary.ProviderBreakdown }}
-                        <div class="provider-box">
-                            <div class="provider-name">
-                                {{ if eq .Provider "AWS" }}<i class="fa-brands fa-aws" style="color:#f59e0b;"></i>
-                                {{ else if eq .Provider "Azure" }}<i class="fa-brands fa-microsoft" style="color:#0284c7;"></i>
-                                {{ else if eq .Provider "GCP" }}<i class="fa-brands fa-google" style="color:#3b82f6;"></i>
-                                {{ else if eq .Provider "GitHub" }}<i class="fa-brands fa-github"></i>
-                                {{ else }}<i class="fa-solid fa-server" style="color:var(--accent);"></i>
-                                {{ end }}
-                                {{ .Provider }}
-                            </div>
-                            <div class="provider-val font-mono">${{ printf "%.2f" .Total }} <span class="text-muted text-xs" style="font-weight:normal;">({{ printf "%.1f" .Percentage }}%)</span></div>
+                    <!-- Donut Chart -->
+                    <div class="donut-wrapper">
+                        <svg viewBox="0 0 36 36" class="donut-svg">
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f3f4f6" stroke-width="4.5"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#16a34a" stroke-width="4.5" stroke-dasharray="60 100" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#22c55e" stroke-width="4.5" stroke-dasharray="25 100" stroke-dashoffset="-60" stroke-linecap="round"></circle>
+                            <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#86efac" stroke-width="4.5" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-linecap="round"></circle>
+                        </svg>
+                        <div class="donut-center">
+                            <span class="donut-val">100%</span>
+                            <span class="donut-sub">Total</span>
                         </div>
+                    </div>
+
+                    <!-- Provider List Items -->
+                    <div class="provider-list-items">
+                        {{ if .summary.ProviderBreakdown }}
+                            {{ range .summary.ProviderBreakdown }}
+                            <div class="provider-list-row">
+                                <div class="provider-list-left">
+                                    {{ if eq .Provider "AWS" }}<i class="fa-brands fa-aws" style="color:#f59e0b;"></i>
+                                    {{ else if eq .Provider "Azure" }}<i class="fa-brands fa-microsoft" style="color:#0284c7;"></i>
+                                    {{ else if eq .Provider "GCP" }}<i class="fa-brands fa-google" style="color:#3b82f6;"></i>
+                                    {{ else if eq .Provider "GitHub" }}<i class="fa-brands fa-github"></i>
+                                    {{ else }}<i class="fa-solid fa-server text-accent"></i>
+                                    {{ end }}
+                                    <span>{{ .Provider }}</span>
+                                </div>
+                                <div class="provider-list-right">
+                                    ${{ printf "%.2f" .Total }} <span class="text-muted text-xs" style="font-weight:normal;">({{ printf "%.1f" .Percentage }}%)</span>
+                                </div>
+                            </div>
+                            {{ end }}
+                        {{ else }}
+                            <p class="text-muted text-sm">No provider data recorded yet.</p>
                         {{ end }}
-                    {{ else }}
-                        <p class="text-muted text-sm">No provider data recorded yet.</p>
-                    {{ end }}
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Cloud Transactions Table -->
+            <!-- BOTTOM RECENT TRANSACTIONS TABLE -->
             <div class="card">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
                     <div>
@@ -212,9 +227,9 @@
                                 <th>Service / Resource</th>
                                 <th>Provider</th>
                                 <th>Category</th>
-                                <th>Date</th>
-                                <th>Cost</th>
-                                <th style="text-align:right;">Actions</th>
+                                <th>Billing Date</th>
+                                <th>Cost (USD)</th>
+                                <th style="text-align:right;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
