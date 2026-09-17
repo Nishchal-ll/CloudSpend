@@ -6,153 +6,123 @@
     <title>{{ .title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Top Navigation -->
-        <header class="navbar">
-            <div class="nav-brand">
+    <div class="app-wrapper">
+        <!-- Clean App Header -->
+        <header class="app-header">
+            <div class="app-brand">
                 <div class="brand-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                    </svg>
+                    <i class="fa-solid fa-cloud"></i>
                 </div>
-                <div class="brand-text">
-                    <span class="brand-name">CloudSpend</span>
-                    <span class="brand-tag">Azure Cloud Edition</span>
-                </div>
+                <span class="brand-title">CloudSpend</span>
             </div>
 
-            <nav class="nav-links">
-                <a href="/" class="nav-link">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-                    Dashboard
+            <nav class="header-nav">
+                <a href="/" class="nav-tab">
+                    <i class="fa-solid fa-gauge-high"></i> Dashboard
                 </a>
-                <a href="/expenses" class="nav-link active">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Expenses
+                <a href="/expenses" class="nav-tab active">
+                    <i class="fa-solid fa-table-list"></i> Expenses
                 </a>
             </nav>
 
-            <div class="nav-actions">
-                <div class="cloud-status-badge">
-                    <span class="status-dot"></span>
-                    <span>Azure Ready</span>
-                </div>
+            <div class="header-actions">
                 <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>
-                    Add Expense
+                    <i class="fa-solid fa-plus"></i> Add Expense
                 </button>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header & Filter Bar -->
-            <div class="page-header">
+        <main>
+            <!-- Page Intro -->
+            <div class="page-intro">
                 <div>
-                    <h1 class="page-title">Expense Management & Records</h1>
-                    <p class="page-subtitle">Track, filter, update, and manage your cloud infrastructure cost items.</p>
+                    <h1>Expense <span class="grad-text">Records.</span></h1>
+                    <p>Track, filter, update, and manage line-item cloud infrastructure costs.</p>
                 </div>
-                <div class="header-actions">
+                <div>
                     <button class="btn btn-primary" onclick="openExpenseModal()">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>
-                        Add New Expense
+                        <i class="fa-solid fa-plus"></i> Add New Expense
                     </button>
                 </div>
             </div>
 
-            <!-- Filter & Search Controls -->
-            <div class="card filter-card">
-                <form id="filterForm" method="GET" action="/expenses" class="filter-bar">
+            <!-- Search & Category Filters -->
+            <div class="card" style="margin-bottom:1.5rem;padding:1.25rem;">
+                <form id="filterForm" method="GET" action="/expenses" class="filter-container" style="margin-bottom:0;">
                     <!-- Search Input -->
-                    <div class="search-box">
-                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <input type="text" name="search" id="searchInput" class="search-input" placeholder="Search by service name, provider, notes..." value="{{ .searchTerm }}">
-                        {{ if .searchTerm }}
-                            <a href="/expenses?category={{ .selectedCategory }}" class="clear-search">&times;</a>
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" name="search" id="searchInput" class="search-field" placeholder="Search by service name, provider, notes..." value="{{ .searchTerm }}">
+                    </div>
+
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <button type="submit" class="btn btn-ghost btn-sm"><i class="fa-solid fa-filter"></i> Search</button>
+                        {{ if or .searchTerm (and .selectedCategory (ne .selectedCategory "All")) }}
+                            <a href="/expenses" class="btn btn-ghost btn-sm">Clear</a>
                         {{ end }}
                     </div>
-
-                    <!-- Category Filter Dropdown -->
-                    <div class="filter-select-wrapper">
-                        <label for="categorySelect" class="filter-label">Category:</label>
-                        <select name="category" id="categorySelect" class="form-select filter-select" onchange="this.form.submit()">
-                            {{ range .categories }}
-                                <option value="{{ . }}" {{ if eq . $.selectedCategory }}selected{{ end }}>{{ . }}</option>
-                            {{ end }}
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-secondary btn-filter">Filter</button>
-                    {{ if or .searchTerm (and .selectedCategory (ne .selectedCategory "All")) }}
-                        <a href="/expenses" class="btn btn-ghost">Reset Filters</a>
-                    {{ end }}
                 </form>
 
-                <!-- Category Quick Pills -->
-                <div class="category-pills-bar">
+                <!-- Category Pills Bar -->
+                <div class="pills-group">
                     {{ range .categories }}
                         <a href="/expenses?category={{ . }}{{ if $.searchTerm }}&search={{ $.searchTerm }}{{ end }}" 
-                           class="filter-pill {{ if or (and (eq . "All") (not $.selectedCategory)) (eq . $.selectedCategory) }}pill-active{{ end }}">
+                           class="pill-item {{ if or (and (eq . "All") (not $.selectedCategory)) (eq . $.selectedCategory) }}active{{ end }}">
                             {{ . }}
                         </a>
                     {{ end }}
                 </div>
             </div>
 
-            <!-- Expenses List Table Card -->
-            <div class="card table-card">
-                <div class="table-header">
-                    <div class="table-stats">
-                        <span class="count-badge">{{ .expenseCount }}</span>
-                        <span class="text-muted">Total Expense Records Found</span>
+            <!-- Expenses Table Card -->
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                    <div style="font-size:0.85rem;color:var(--muted);font-weight:600;">
+                        Showing <span style="color:var(--fg);">{{ .expenseCount }}</span> expense record{{ if ne .expenseCount 1 }}s{{ end }}
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="data-table">
+                <div class="table-wrap">
+                    <table>
                         <thead>
                             <tr>
-                                <th># ID</th>
-                                <th>Cloud Service / Resource</th>
+                                <th style="width:60px;">ID</th>
+                                <th>Service / Resource</th>
                                 <th>Provider</th>
                                 <th>Category</th>
                                 <th>Billing Date</th>
-                                <th>Cost (USD)</th>
-                                <th class="text-right">Actions</th>
+                                <th>Cost ($)</th>
+                                <th style="text-align:right;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{ if .expenses }}
                                 {{ range .expenses }}
                                 <tr id="expense-row-{{ .ID }}">
-                                    <td class="text-mono text-muted">#{{ .ID }}</td>
+                                    <td class="font-mono" style="color:var(--muted);font-size:0.8rem;">#{{ .ID }}</td>
                                     <td>
-                                        <div class="service-name-cell">
-                                            <span class="service-title">{{ .Title }}</span>
-                                            {{ if .Description }}
-                                                <span class="service-desc">{{ .Description }}</span>
-                                            {{ end }}
-                                        </div>
+                                        <div class="service-title">{{ .Title }}</div>
+                                        {{ if .Description }}
+                                            <div class="service-note">{{ .Description }}</div>
+                                        {{ end }}
                                     </td>
-                                    <td>
-                                        <span class="provider-badge badge-{{ .Provider }}">{{ .Provider }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="category-pill pill-{{ .Category }}">{{ .Category }}</span>
-                                    </td>
-                                    <td class="text-mono">{{ .ExpenseDate }}</td>
-                                    <td class="cost-cell">${{ printf "%.2f" .Amount }}</td>
-                                    <td class="text-right">
-                                        <div class="action-buttons">
-                                            <button type="button" class="btn-icon edit-btn" title="Edit Expense" onclick="openEditModal({{ .ID }}, '{{ .Title }}', '{{ .Provider }}', '{{ .Category }}', {{ .Amount }}, '{{ .ExpenseDate }}', '{{ .Description }}')">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                    <td><span class="prov-tag">{{ .Provider }}</span></td>
+                                    <td><span class="tag-pill">{{ .Category }}</span></td>
+                                    <td class="font-mono" style="font-size:0.85rem;">{{ .ExpenseDate }}</td>
+                                    <td class="cost-amount">${{ printf "%.2f" .Amount }}</td>
+                                    <td style="text-align:right;">
+                                        <div style="display:inline-flex;gap:0.35rem;">
+                                            <button type="button" class="btn-action" title="Edit Expense" onclick="openEditModal({{ .ID }}, '{{ .Title }}', '{{ .Provider }}', '{{ .Category }}', {{ .Amount }}, '{{ .ExpenseDate }}', '{{ .Description }}')">
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </button>
-                                            <button type="button" class="btn-icon delete-btn" title="Delete Expense" onclick="confirmDeleteExpense({{ .ID }}, '{{ .Title }}')">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                            <button type="button" class="btn-action del" title="Delete Expense" onclick="confirmDeleteExpense({{ .ID }}, '{{ .Title }}')">
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -160,15 +130,10 @@
                                 {{ end }}
                             {{ else }}
                                 <tr>
-                                    <td colspan="7">
-                                        <div class="empty-state">
-                                            <div class="empty-icon">
-                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                                            </div>
-                                            <h3>No cloud expenses match your query</h3>
-                                            <p class="text-muted">Try clearing your search keyword or switching category filter.</p>
-                                            <a href="/expenses" class="btn btn-secondary mt-3">Reset All Filters</a>
-                                        </div>
+                                    <td colspan="7" style="text-align:center;color:var(--muted);padding:3rem 1.5rem;">
+                                        <div style="font-size:1.5rem;margin-bottom:0.5rem;"><i class="fa-solid fa-receipt"></i></div>
+                                        <p>No expense records match your query.</p>
+                                        <a href="/expenses" class="btn btn-ghost btn-sm" style="margin-top:0.75rem;">Reset Filter</a>
                                     </td>
                                 </tr>
                             {{ end }}
@@ -177,40 +142,26 @@
                 </div>
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <p>&copy; 2026 <strong>CloudSpend</strong> — Cloud Expense & Budget Intelligence Platform.</p>
-                <div class="footer-links">
-                    <a href="https://github.com/Nishchal-ll/CloudSpend" target="_blank" rel="noopener">GitHub Repository</a>
-                    <span>•</span>
-                    <a href="/">Dashboard</a>
-                    <span>•</span>
-                    <a href="/api/expenses" target="_blank">JSON REST API</a>
-                </div>
-            </div>
-        </footer>
     </div>
 
     <!-- Add/Edit Expense Modal -->
-    <div id="expenseModal" class="modal-backdrop hidden">
-        <div class="modal-dialog">
+    <div id="expenseModal" class="modal-overlay hidden">
+        <div class="modal-box">
             <div class="modal-header">
                 <h3 id="modalTitle" class="modal-title">Add Cloud Expense</h3>
-                <button type="button" class="btn-close" onclick="closeExpenseModal()">&times;</button>
+                <button type="button" class="close-btn" onclick="closeExpenseModal()">&times;</button>
             </div>
             <form id="expenseForm" onsubmit="handleExpenseSubmit(event)">
                 <input type="hidden" id="expenseId" value="">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="form-label" for="expenseTitle">Resource / Service Name <span class="req">*</span></label>
-                        <input type="text" id="expenseTitle" class="form-input" placeholder="e.g. Azure App Service (Linux B1)" required>
+                        <label class="form-label" for="expenseTitle">Resource / Service Name *</label>
+                        <input type="text" id="expenseTitle" class="form-input" placeholder="e.g. Azure App Service Linux B1" required>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label" for="expenseProvider">Cloud Provider <span class="req">*</span></label>
+                            <label class="form-label" for="expenseProvider">Provider *</label>
                             <select id="expenseProvider" class="form-select" required>
                                 {{ range .providers }}
                                     <option value="{{ . }}">{{ . }}</option>
@@ -218,7 +169,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="expenseCategory">Category <span class="req">*</span></label>
+                            <label class="form-label" for="expenseCategory">Category *</label>
                             <select id="expenseCategory" class="form-select" required>
                                 <option value="Compute">Compute</option>
                                 <option value="Database">Database</option>
@@ -232,27 +183,24 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label" for="expenseAmount">Cost / Amount (USD) <span class="req">*</span></label>
-                            <div class="input-prefix-wrapper">
-                                <span class="input-prefix">$</span>
-                                <input type="number" id="expenseAmount" class="form-input prefix-padding" step="0.01" min="0.01" placeholder="45.00" required>
-                            </div>
+                            <label class="form-label" for="expenseAmount">Cost ($ USD) *</label>
+                            <input type="number" id="expenseAmount" class="form-input" step="0.01" min="0.01" placeholder="45.00" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="expenseDate">Expense Date <span class="req">*</span></label>
+                            <label class="form-label" for="expenseDate">Billing Date *</label>
                             <input type="date" id="expenseDate" class="form-input" required>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="expenseDesc">Description / Notes</label>
-                        <textarea id="expenseDesc" class="form-textarea" rows="2" placeholder="Environment details, purpose, cluster ID..."></textarea>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label class="form-label" for="expenseDesc">Description / Note</label>
+                        <textarea id="expenseDesc" class="form-textarea" rows="2" placeholder="Environment details, cluster ID, purpose..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeExpenseModal()">Cancel</button>
+                    <button type="button" class="btn btn-ghost" onclick="closeExpenseModal()">Cancel</button>
                     <button type="submit" id="btnSubmitExpense" class="btn btn-primary">Save Expense</button>
                 </div>
             </form>
@@ -260,26 +208,26 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="modal-backdrop hidden">
-        <div class="modal-dialog modal-sm">
+    <div id="deleteModal" class="modal-overlay hidden">
+        <div class="modal-box" style="max-width:420px;">
             <div class="modal-header">
-                <h3 class="modal-title text-danger">Delete Cloud Expense</h3>
-                <button type="button" class="btn-close" onclick="closeDeleteModal()">&times;</button>
+                <h3 class="modal-title" style="color:var(--danger);">Delete Expense</h3>
+                <button type="button" class="close-btn" onclick="closeDeleteModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to delete <strong id="deleteExpenseName">this expense</strong>?</p>
-                <p class="text-muted text-sm mt-2">This action cannot be undone and will update budget statistics.</p>
+                <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">This action will permanently delete this record and recalculate your dashboard totals.</p>
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="deleteExpenseId" value="">
-                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
                 <button type="button" class="btn btn-danger" onclick="executeDeleteExpense()">Confirm Delete</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="toast-container"></div>
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-box"></div>
 
     <script src="/static/js/app.js"></script>
 </body>

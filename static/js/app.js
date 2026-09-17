@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Close modal on backdrop click
-    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+    document.querySelectorAll('.modal-overlay, .modal-backdrop').forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.add('hidden');
