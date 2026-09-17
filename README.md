@@ -23,9 +23,9 @@
 
 ## 📌 Project Overview
 
-**CloudSpend** is an enterprise-grade cloud cost intelligence and budget management platform built with **Go (Gin)**, **SQLite**, and **Go HTML Templates**, containerized with **Docker**, and deployed on **Microsoft Azure App Service** via **Azure Container Registry (ACR)**.
+**CloudSpend** is a full-stack **Go application** designed for cloud cost intelligence and budget management. Built natively with **Go (Gin framework)**, embedded **SQLite**, and server-side **Go HTML Templates**, the entire application is containerized with **Docker** and **deployed live on Microsoft Azure** using **Azure Container Registry (ACR)** and **Azure App Service (Linux)**.
 
-It empowers engineering teams and cloud architects to monitor multi-cloud infrastructure expenditures across **Microsoft Azure, AWS, Google Cloud, Cloudflare, and SaaS services**, calculate real-time budget utilization, analyze spend by categories, and prevent cost overruns.
+It provides a centralized dashboard for tracking, categorizing, and managing cloud infrastructure expenditures across **Microsoft Azure, AWS, Google Cloud, Cloudflare, and SaaS services**, calculating real-time monthly budget consumption and preventing infrastructure cost overruns.
 
 ---
 
