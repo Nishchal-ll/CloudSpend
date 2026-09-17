@@ -110,7 +110,7 @@
                         <span class="text-muted font-mono">${{ printf "%.0f" .summary.TotalSpent }} of ${{ printf "%.0f" .summary.MonthlyBudget }}</span>
                     </div>
                     <div class="progress-track">
-                        <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ printf "%.1f" .summary.PercentUsed }}{{ end }}%;"></div>
+                        <div class="progress-fill" data-progress="{{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ printf "%.1f" .summary.PercentUsed }}{{ end }}"></div>
                     </div>
                 </div>
 
@@ -151,7 +151,7 @@
                                 <span class="category-bar-cost">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f" .Percentage }}%</span>
                             </div>
                             <div class="progress-track">
-                                <div class="progress-fill" style="width: {{ printf "%.1f" .Percentage }}%;"></div>
+                                <div class="progress-fill" data-progress="{{ printf "%.1f" .Percentage }}"></div>
                             </div>
                         </div>
                         {{ end }}

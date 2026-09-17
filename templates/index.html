@@ -91,7 +91,7 @@
                         <span class="kpi-label">Remaining Balance</span>
                         <div class="kpi-icon"><i class="fa-solid fa-scale-balanced"></i></div>
                     </div>
-                    <div class="kpi-value" style="{{ if lt .summary.RemainingBudget 0.0 }}color:var(--danger);{{ end }}">
+                    <div class="kpi-value {{ if lt .summary.RemainingBudget 0.0 }}text-danger{{ end }}">
                         ${{ printf "%.2f" .summary.RemainingBudget }}
                     </div>
                     <div class="kpi-footer">
@@ -111,7 +111,7 @@
                     <div class="kpi-value">{{ printf "%.1f" .summary.PercentUsed }}%</div>
                     <div class="kpi-footer">
                         <div class="progress-track" style="margin-top:0;">
-                            <div class="progress-fill" style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%; {{ if gt .summary.PercentUsed 85.0 }}background:var(--danger);{{ end }}"></div>
+                            <div class="progress-fill {{ if gt .summary.PercentUsed 85.0 }}progress-danger{{ end }}" data-progress="{{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}"></div>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                                 <span class="breakdown-amt">${{ printf "%.2f" .Total }} &middot; {{ printf "%.1f" .Percentage }}%</span>
                             </div>
                             <div class="progress-track">
-                                <div class="progress-fill" style="width: {{ .Percentage }}%;"></div>
+                                <div class="progress-fill" data-progress="{{ .Percentage }}"></div>
                             </div>
                         </div>
                         {{ end }}

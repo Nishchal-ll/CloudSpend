@@ -1,6 +1,12 @@
 // CloudSpend — Client Application Logic
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize data-progress bars
+    document.querySelectorAll('.progress-fill[data-progress]').forEach(bar => {
+        const val = parseFloat(bar.getAttribute('data-progress')) || 0;
+        bar.style.width = Math.min(100, Math.max(0, val)) + '%';
+    });
+
     // Set default date to today for new expenses
     const dateInput = document.getElementById('expenseDate');
     if (dateInput && !dateInput.value) {
