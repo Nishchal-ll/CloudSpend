@@ -16,7 +16,7 @@
 ### 1. Landing Page
 ![CloudSpend Landing Page](https://github.com/Nishchal-ll/CloudSpend/blob/main/image1.png)
 
-### 2. Executive Dashboard (100% Full-Width)
+### 2. Executive Dashboard 
 ![CloudSpend Dashboard](https://github.com/Nishchal-ll/CloudSpend/blob/main/image2.png)
 
 ---
