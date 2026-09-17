@@ -8,21 +8,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg: #ffffff;
-            --bg-soft: #f7faf9;
-            --bg-tint: #ecfdf5;
-            --fg: #052e2b;
-            --muted: #6b7c78;
-            --accent: #10b981;
-            --accent-deep: #047857;
-            --accent-glow: #34d399;
-            --border: #e5ebe9;
+            --bg-soft: #f9fafb;
+            --bg-muted: #f3f4f6;
+            --fg: #111827;
+            --muted: #6b7280;
+            --light-muted: #9ca3af;
+            --accent: #16a34a;
+            --accent-dark: #15803d;
+            --accent-light: #dcfce7;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
         }
 
         * {
@@ -35,99 +36,80 @@
         }
 
         .font-display {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.025em;
         }
 
         .font-mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Subtle grid backdrop */
-        .grid-bg {
-            background-image:
-                linear-gradient(rgba(16, 185, 129, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(16, 185, 129, 0.045) 1px, transparent 1px);
-            background-size: 56px 56px;
-            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
-        }
-
-        .hero-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.5;
-            pointer-events: none;
-            animation: float 14s ease-in-out infinite;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(20px, -20px) scale(1.05);
-            }
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
         }
 
         .nav-blur {
-            backdrop-filter: blur(14px);
-            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .btn-primary {
             background: var(--accent);
             color: #fff;
-            transition: all .25s ease;
-            box-shadow: 0 6px 24px -8px rgba(16, 185, 129, 0.5);
+            transition: all .2s ease;
         }
 
         .btn-primary:hover {
-            background: var(--accent-deep);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px -8px rgba(16, 185, 129, 0.6);
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
         }
 
-        .btn-ghost {
-            transition: all .2s ease;
+        .btn-outline {
+            background: transparent;
+            color: var(--fg);
             border: 1px solid var(--border);
+            transition: all .2s ease;
         }
 
-        .btn-ghost:hover {
-            border-color: var(--accent);
-            color: var(--accent-deep);
-            background: var(--bg-tint);
+        .btn-outline:hover {
+            border-color: var(--fg);
+            background: var(--bg-soft);
         }
 
         .card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 16px;
-            transition: all .3s ease;
+            border-radius: 12px;
+            transition: all .3s cubic-bezier(.4, 0, .2, 1);
         }
 
         .card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 14px 44px -20px rgba(16, 185, 129, 0.25);
-            transform: translateY(-3px);
+            border-color: #d1d5db;
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.08);
         }
 
-        .accent-line {
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            height: 1px;
+        .soft-shadow {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px -8px rgba(0, 0, 0, 0.08);
         }
 
-        .accent-dot {
-            background: var(--accent);
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        .accent-bg-light {
+            background: var(--accent-light);
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        .accent-text-dark {
+            color: var(--accent-dark);
+        }
+
+        .section-divider {
+            border-top: 1px solid var(--border);
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(24px);
-            transition: all .7s cubic-bezier(.2, .7, .2, 1);
+            transform: translateY(16px);
+            transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1);
         }
 
         .reveal.in {
@@ -135,95 +117,10 @@
             transform: translateY(0);
         }
 
-        .marquee-track {
-            animation: scroll 30s linear infinite;
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* Animated bar */
-        .bar {
-            transform-origin: bottom;
-            animation: barGrow 1.4s cubic-bezier(.2, .8, .2, 1) forwards;
-            transform: scaleY(0);
-        }
-
-        @keyframes barGrow {
-            to {
-                transform: scaleY(1);
-            }
-        }
-
-        /* Code window */
-        .code-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .pulse-dot {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .35;
-            }
-        }
-
-        .grad-text {
-            background: linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 60%, var(--accent-glow) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .dash-line {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawLine 2.4s ease forwards 0.6s;
-        }
-
-        @keyframes drawLine {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        .badge-glow {
-            background: var(--bg-tint);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            color: var(--accent-deep);
-        }
-
-        .tab-btn.active {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        /* Animated underline */
         .link-underline {
             position: relative;
+            color: var(--muted);
+            transition: color .2s ease;
         }
 
         .link-underline::after {
@@ -237,8 +134,96 @@
             transition: width .3s ease;
         }
 
+        .link-underline:hover {
+            color: var(--fg);
+        }
+
         .link-underline:hover::after {
             width: 100%;
+        }
+
+        /* Chart drawing animations */
+        .line-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2.2s ease forwards .3s;
+        }
+
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .pie-segment {
+            stroke-dasharray: 0 1000;
+            animation: drawPie 1.5s ease forwards .5s;
+        }
+
+        @keyframes drawPie {
+            to {
+                stroke-dasharray: var(--len, 1000) 1000;
+            }
+        }
+
+        .bar-grow {
+            transform-origin: bottom;
+            transform: scaleY(0);
+            animation: grow 1.2s cubic-bezier(.2, .8, .2, 1) forwards .3s;
+        }
+
+        @keyframes grow {
+            to {
+                transform: scaleY(1);
+            }
+        }
+
+        .arch-arrow {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent 0%, #d1d5db 20%, #d1d5db 80%, transparent 100%);
+            position: relative;
+        }
+
+        .arch-arrow::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d1d5db;
+            font-size: 10px;
+            background: white;
+            padding: 0 4px;
+        }
+
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(22, 163, 74, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(22, 163, 74, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+            mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 40%, transparent 100%);
+        }
+
+        .code-window {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .code-line {
+            display: flex;
+        }
+
+        .code-num {
+            color: #475569;
+            width: 24px;
+            display: inline-block;
+            text-align: right;
+            margin-right: 16px;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -255,589 +240,600 @@
     </style>
 </head>
 
-<body class="overflow-x-hidden">
+<body class="antialiased overflow-x-hidden">
 
-    <!-- NAV -->
-    <nav class="fixed top-0 inset-x-0 z-50 nav-blur border-b border-[var(--border)]">
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed top-0 inset-x-0 z-50 nav-blur">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="#" class="flex items-center gap-2.5">
-                <div
-                    class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                    <i class="fa-solid fa-cloud text-white text-sm"></i>
+                <div class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center soft-shadow">
+                    <i class="fa-solid fa-chart-line text-white text-sm"></i>
                 </div>
-                <span class="font-display font-bold text-xl tracking-tight">CloudSpend</span>
+                <span class="font-display font-bold text-lg tracking-tight">CloudSpend</span>
             </a>
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--muted)]">
-                <a href="#features" class="link-underline hover:text-[var(--fg)]">Features</a>
-                <a href="#dashboard" class="link-underline hover:text-[var(--fg)]">Dashboard</a>
-                <a href="#architecture" class="link-underline hover:text-[var(--fg)]">Architecture</a>
-                <a href="#pricing" class="link-underline hover:text-[var(--fg)]">Pricing</a>
-                <a href="#docs" class="link-underline hover:text-[var(--fg)]">Docs</a>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#features" class="link-underline">Features</a>
+                <a href="#dashboard" class="link-underline">Dashboard</a>
+                <a href="#pricing" class="link-underline">Pricing</a>
+                <a href="#documentation" class="link-underline">Documentation</a>
             </div>
             <div class="flex items-center gap-3">
-                <a href="#"
-                    class="hidden sm:inline-block text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)]">Sign
-                    in</a>
-                <a href="#" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">Start free</a>
+                <a href="#" class="btn-outline px-4 py-2 rounded-lg text-sm font-medium">Login</a>
+                <a href="#" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">Get Started</a>
             </div>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="relative pt-36 pb-24 overflow-hidden">
-        <div class="absolute inset-0 grid-bg"></div>
-        <div class="hero-blob bg-emerald-300" style="width:480px;height:480px;top:-120px;left:-100px;"></div>
-        <div class="hero-blob bg-teal-200" style="width:380px;height:380px;top:60px;right:-80px;animation-delay:-7s;">
-        </div>
-
-        <div class="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-center">
-            <div class="lg:col-span-7">
-                <span class="badge-glow inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-dot"></span>
-                    v2.4 · Now with multi-provider forecasting
-                </span>
-                <h1 class="font-display font-bold text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] mt-6">
-                    Cloud spend,<br>
-                    <span class="grad-text">finally intelligent.</span>
-                </h1>
-                <p class="text-lg text-[var(--muted)] mt-6 max-w-xl leading-relaxed">
-                    Real-time KPI dashboards, provider distribution insights, and CRUD expense tracking — all powered by
-                    a lightweight Go backend. Built for teams that ship fast and budget smarter.
-                </p>
-                <div class="flex flex-wrap items-center gap-3 mt-8">
-                    <a href="#" class="btn-primary px-6 py-3.5 rounded-xl font-semibold flex items-center gap-2">
-                        Launch live demo <i class="fa-solid fa-arrow-right text-sm"></i>
-                    </a>
-                    <a href="#architecture"
-                        class="btn-ghost px-6 py-3.5 rounded-xl font-semibold flex items-center gap-2 text-[var(--fg)]">
-                        <i class="fa-brands fa-github"></i> View architecture
-                    </a>
-                </div>
-                <div class="flex items-center gap-6 mt-10 text-xs text-[var(--muted)] font-mono">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Go +
-                        Gin</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i>
-                        SQLite</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> &lt;25MB
-                        image</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Azure
-                        deploy</span>
-                </div>
-            </div>
-
-            <!-- DASHBOARD MOCKUP -->
-            <div class="lg:col-span-5">
-                <div class="card p-5 relative" style="box-shadow: 0 30px 80px -30px rgba(16,185,129,0.35);">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <div class="text-xs text-[var(--muted)] font-mono">CLOUDSPEND · LIVE</div>
-                            <div class="font-display font-semibold text-lg">Monthly burn</div>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="code-dot bg-red-300"></span>
-                            <span class="code-dot bg-amber-300"></span>
-                            <span class="code-dot bg-emerald-400"></span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-end gap-3">
-                        <div class="font-display font-bold text-4xl">$48,920</div>
-                        <span class="text-xs font-semibold text-emerald-600 mb-1.5 flex items-center gap-1"><i
-                                class="fa-solid fa-arrow-down"></i> 12.4%</span>
-                    </div>
-                    <div class="text-xs text-[var(--muted)] mt-1">vs. $55,840 last month</div>
-
-                    <!-- CHART -->
-                    <svg viewBox="0 0 400 140" class="w-full mt-5" preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="gradFill" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.35" />
-                                <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path
-                            d="M0,100 C40,90 60,60 100,55 C140,50 160,80 200,70 C240,60 260,30 300,28 C340,26 360,40 400,25"
-                            fill="none" stroke="#10b981" stroke-width="2.5" class="dash-line" />
-                        <path
-                            d="M0,100 C40,90 60,60 100,55 C140,50 160,80 200,70 C240,60 260,30 300,28 C340,26 360,40 400,25 L400,140 L0,140 Z"
-                            fill="url(#gradFill)" />
-                    </svg>
-
-                    <!-- PROVIDER BREAKDOWN -->
-                    <div class="mt-5 space-y-2.5">
-                        <div class="text-xs text-[var(--muted)] font-mono uppercase tracking-wider">Provider
-                            distribution</div>
-                        <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="flex items-center gap-1.5"><i class="fa-brands fa-aws text-orange-500"></i>
-                                    AWS</span><span class="font-mono">62%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="bar h-full bg-emerald-500" style="width:62%;animation-delay:.2s;"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="flex items-center gap-1.5"><i
-                                        class="fa-brands fa-google text-blue-500"></i> GCP</span><span
-                                    class="font-mono">24%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="bar h-full bg-emerald-400" style="width:24%;animation-delay:.4s;"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="flex items-center gap-1.5"><i
-                                        class="fa-brands fa-microsoft text-blue-600"></i> Azure</span><span
-                                    class="font-mono">14%</span>
-                            </div>
-                            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="bar h-full bg-teal-400" style="width:14%;animation-delay:.6s;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FLOATING BADGE -->
-                <div class="absolute -bottom-6 -left-4 sm:left-6 card px-4 py-3 flex items-center gap-3"
-                    style="box-shadow:0 12px 30px -10px rgba(16,185,129,0.3);">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                        <i class="fa-solid fa-bolt text-emerald-600"></i>
-                    </div>
-                    <div>
-                        <div class="text-[10px] font-mono text-[var(--muted)] uppercase">API latency</div>
-                        <div class="font-display font-bold text-sm">18ms · p99</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TRUST STRIP -->
-    <section class="border-y border-[var(--border)] bg-[var(--bg-soft)] py-10 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center text-xs font-mono uppercase tracking-[0.3em] text-[var(--muted)] mb-6">Trusted by
-                engineering teams shipping on</div>
-            <div class="relative overflow-hidden">
-                <div class="flex gap-14 marquee-track whitespace-nowrap items-center text-2xl text-[var(--muted)]/70">
-                    <i class="fa-brands fa-aws"></i><span class="font-display font-semibold text-lg">AWS</span>
-                    <i class="fa-brands fa-google"></i><span class="font-display font-semibold text-lg">GCP</span>
-                    <i class="fa-brands fa-microsoft"></i><span class="font-display font-semibold text-lg">Azure</span>
-                    <i class="fa-brands fa-docker"></i><span class="font-display font-semibold text-lg">Docker</span>
-                    <i class="fa-brands fa-github"></i><span class="font-display font-semibold text-lg">GitHub
-                        Actions</span>
-                    <i class="fa-solid fa-database"></i><span class="font-display font-semibold text-lg">SQLite</span>
-                    <i class="fa-brands fa-aws"></i><span class="font-display font-semibold text-lg">AWS</span>
-                    <i class="fa-brands fa-google"></i><span class="font-display font-semibold text-lg">GCP</span>
-                    <i class="fa-brands fa-microsoft"></i><span class="font-display font-semibold text-lg">Azure</span>
-                    <i class="fa-brands fa-docker"></i><span class="font-display font-semibold text-lg">Docker</span>
-                    <i class="fa-brands fa-github"></i><span class="font-display font-semibold text-lg">GitHub
-                        Actions</span>
-                    <i class="fa-solid fa-database"></i><span class="font-display font-semibold text-lg">SQLite</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features" class="py-24">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-2xl">
-                <span
-                    class="badge-glow inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold">Features</span>
-                <h2 class="font-display font-bold text-4xl md:text-5xl tracking-tight mt-4">Everything you need to <span
-                        class="grad-text">tame cloud costs.</span></h2>
-                <p class="text-[var(--muted)] mt-4 text-lg">A focused toolkit that combines real-time visibility,
-                    structured data, and a clean REST surface — no bloat, no spreadsheets.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-5 mt-12">
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-solid fa-gauge-high text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">Real-time KPI dashboards</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Live monthly burn, projected spend, and
-                        variance against budget — rendered through Go HTML templates with sub-second refresh.</p>
-                </div>
-
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-solid fa-chart-pie text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">Provider distribution</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Visualize spend split across AWS, GCP,
-                        and Azure. Spot anomalies and rebalance workloads before invoices land.</p>
-                </div>
-
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-solid fa-table-list text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">CRUD expense records</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Tag, categorize, and annotate every line
-                        item. Full create-read-update-delete flow backed by SQLite for instant search.</p>
-                </div>
-
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-solid fa-code-branch text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">REST API surface</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Clean JSON endpoints powered by Gin.
-                        Integrate CloudSpend data into Slack bots, cron alerts, or internal tooling.</p>
-                </div>
-
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-solid fa-docker text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">Containerized &amp; tiny</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Multi-stage Dockerfile produces a
-                        minimal Alpine image under 25MB. Fast cold-starts, predictable rollouts.</p>
-                </div>
-
-                <div class="card p-7 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
-                        <i class="fa-brands fa-microsoft text-emerald-600 text-lg"></i>
-                    </div>
-                    <h3 class="font-display font-semibold text-xl">Azure-native deploy</h3>
-                    <p class="text-[var(--muted)] text-sm mt-2 leading-relaxed">Push to Azure Container Registry, deploy
-                        to App Service in minutes. Managed scaling without ops overhead.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DASHBOARD PREVIEW -->
-    <section id="dashboard" class="py-24 bg-[var(--bg-soft)] border-y border-[var(--border)]">
-        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-20">
+        <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+        <div class="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
             <div>
                 <span
-                    class="badge-glow inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold">Dashboard</span>
-                <h2 class="font-display font-bold text-4xl md:text-5xl tracking-tight mt-4">One screen. <span
-                        class="grad-text">Total clarity.</span></h2>
-                <p class="text-[var(--muted)] mt-4 text-lg leading-relaxed">No tabs to hunt through. CloudSpend surfaces
-                    the metrics that matter — current burn, projected month-end, budget variance, and per-provider
-                    drill-down — on a single, calm interface.</p>
-
-                <ul class="mt-8 space-y-4">
-                    <li class="flex items-start gap-3">
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium accent-bg-light accent-text-dark border border-green-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
+                    Enterprise-grade Cloud Budgeting
+                </span>
+                <h1
+                    class="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] mt-6">
+                    Control Cloud Costs<br>With Confidence
+                </h1>
+                <p class="text-lg text-gray-500 mt-6 max-w-lg leading-relaxed">
+                    Track expenses, monitor budgets, and gain actionable insights across your cloud infrastructure in
+                    one centralized platform.
+                </p>
+                <div class="flex flex-wrap items-center gap-4 mt-8">
+                    <a href="#" class="btn-primary px-6 py-3 rounded-lg text-sm font-semibold flex items-center gap-2">
+                        Start Tracking Expenses <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                    <a href="#" class="btn-outline px-6 py-3 rounded-lg text-sm font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-play text-xs"></i> View Demo
+                    </a>
+                </div>
+                <div class="flex items-center gap-6 mt-12 text-sm text-gray-500">
+                    <div class="flex -space-x-2">
                         <div
-                            class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fa-solid fa-check text-emerald-600 text-xs"></i></div>
-                        <div>
-                            <div class="font-semibold">KPI cards update in real-time</div>
-                            <div class="text-sm text-[var(--muted)]">WebSocket-driven metrics, no manual refresh.</div>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
+                            class="w-8 h-8 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-xs text-green-700 font-semibold">
+                            A</div>
                         <div
-                            class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fa-solid fa-check text-emerald-600 text-xs"></i></div>
-                        <div>
-                            <div class="font-semibold">Filter by provider, tag, or environment</div>
-                            <div class="text-sm text-[var(--muted)]">Slice spend without leaving the page.</div>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
+                            class="w-8 h-8 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-xs text-blue-700 font-semibold">
+                            B</div>
                         <div
-                            class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fa-solid fa-check text-emerald-600 text-xs"></i></div>
-                        <div>
-                            <div class="font-semibold">Export to CSV / JSON</div>
-                            <div class="text-sm text-[var(--muted)]">Pipe into BI tools or finance workflows.</div>
-                        </div>
-                    </li>
-                </ul>
-
-                <a href="#" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold mt-9">
-                    Open live dashboard <i class="fa-solid fa-arrow-right text-sm"></i>
-                </a>
+                            class="w-8 h-8 rounded-full bg-purple-100 border-2 border-white flex items-center justify-center text-xs text-purple-700 font-semibold">
+                            C</div>
+                    </div>
+                    <div>Trusted by <span class="text-gray-900 font-medium">2,000+</span> engineering teams</div>
+                </div>
             </div>
 
-            <!-- MOCK -->
-            <div class="card p-6" style="box-shadow:0 30px 80px -30px rgba(16,185,129,0.3);">
-                <div class="flex items-center justify-between mb-5">
-                    <div class="flex gap-1.5">
-                        <span class="code-dot bg-red-300"></span>
-                        <span class="code-dot bg-amber-300"></span>
-                        <span class="code-dot bg-emerald-400"></span>
-                    </div>
-                    <div class="text-xs font-mono text-[var(--muted)]">cloudspend.app/dash</div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 mb-5">
-                    <div class="bg-[var(--bg-soft)] rounded-xl p-3 border border-[var(--border)]">
-                        <div class="text-[10px] font-mono uppercase text-[var(--muted)]">MTD spend</div>
-                        <div class="font-display font-bold text-lg mt-1">$48.9k</div>
-                        <div class="text-[10px] text-emerald-600 font-semibold">↓ 12.4%</div>
-                    </div>
-                    <div class="bg-[var(--bg-soft)] rounded-xl p-3 border border-[var(--border)]">
-                        <div class="text-[10px] font-mono uppercase text-[var(--muted)]">Projected</div>
-                        <div class="font-display font-bold text-lg mt-1">$72.1k</div>
-                        <div class="text-[10px] text-amber-600 font-semibold">87% of budget</div>
-                    </div>
-                    <div class="bg-[var(--bg-soft)] rounded-xl p-3 border border-[var(--border)]">
-                        <div class="text-[10px] font-mono uppercase text-[var(--muted)]">Variance</div>
-                        <div class="font-display font-bold text-lg mt-1">-$9.8k</div>
-                        <div class="text-[10px] text-emerald-600 font-semibold">under budget</div>
-                    </div>
-                </div>
-
-                <!-- BAR CHART -->
-                <div class="flex items-end justify-between h-32 gap-2 px-1">
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-100 rounded-t-md bar" style="height:40%;animation-delay:.1s;">
+            <div class="relative">
+                <div class="absolute -inset-4 bg-green-100/40 rounded-3xl blur-3xl"></div>
+                <div class="relative card p-4 soft-shadow">
+                    <div class="flex items-center justify-between px-2 pb-3 border-b border-gray-100">
+                        <div class="flex gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
                         </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">Apr</span>
+                        <span class="text-xs font-mono text-gray-400">app.cloudspend.io</span>
                     </div>
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-200 rounded-t-md bar" style="height:60%;animation-delay:.2s;">
+                    <div class="grid grid-cols-3 gap-3 p-2">
+                        <div class="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                            <div class="text-[10px] uppercase tracking-wider text-gray-500">Monthly Spend</div>
+                            <div class="font-bold text-lg mt-1 text-gray-900">$48,250</div>
+                            <div class="flex items-center gap-1 text-[10px] text-green-600 mt-1"><i
+                                    class="fa-solid fa-arrow-down"></i> 12%</div>
                         </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">May</span>
+                        <div class="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                            <div class="text-[10px] uppercase tracking-wider text-gray-500">Budget Used</div>
+                            <div class="font-bold text-lg mt-1 text-gray-900">74%</div>
+                            <div class="flex items-center gap-1 text-[10px] text-gray-500 mt-1">$74k of $100k</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                            <div class="text-[10px] uppercase tracking-wider text-gray-500">Providers</div>
+                            <div class="font-bold text-lg mt-1 text-gray-900">03</div>
+                            <div class="flex items-center gap-1 text-[10px] text-gray-500 mt-1"><i
+                                    class="fa-solid fa-cloud"></i> Multi-cloud</div>
+                        </div>
                     </div>
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-300 rounded-t-md bar" style="height:75%;animation-delay:.3s;">
+                    <div class="p-2">
+                        <div class="flex items-center justify-between px-2 mb-2">
+                            <span class="text-xs font-semibold text-gray-700">Expense Trend</span>
+                            <span class="text-[10px] text-gray-400 font-mono">Last 6 months</span>
                         </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">Jun</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-400 rounded-t-md bar" style="height:90%;animation-delay:.4s;">
-                        </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">Jul</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-500 rounded-t-md bar" style="height:65%;animation-delay:.5s;">
-                        </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">Aug</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-2">
-                        <div class="w-full bg-emerald-600 rounded-t-md bar" style="height:55%;animation-delay:.6s;">
-                        </div>
-                        <span class="text-[9px] font-mono text-[var(--muted)]">Sep</span>
+                        <svg viewBox="0 0 400 120" class="w-full">
+                            <defs>
+                                <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#16a34a" stop-opacity="0.2" />
+                                    <stop offset="100%" stop-color="#16a34a" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M0,90 C40,85 60,40 100,50 C140,60 160,20 200,30 C240,40 260,70 300,55 C340,40 360,25 400,35"
+                                fill="none" stroke="#16a34a" stroke-width="2" class="line-path" />
+                            <path
+                                d="M0,90 C40,85 60,40 100,50 C140,60 160,20 200,30 C240,40 260,70 300,55 C340,40 360,25 400,35 L400,120 L0,120 Z"
+                                fill="url(#heroGrad)" />
+                            <circle cx="200" cy="30" r="3" fill="#16a34a" />
+                            <circle cx="200" cy="30" r="6" fill="#16a34a" opacity="0.2" />
+                        </svg>
                     </div>
                 </div>
-
-                <!-- RECENT ENTRIES -->
-                <div class="mt-5 border-t border-[var(--border)] pt-4">
-                    <div class="text-xs font-mono uppercase text-[var(--muted)] mb-2">Recent expense records</div>
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between text-sm py-1.5">
-                            <span class="flex items-center gap-2"><span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> EC2 —
-                                prod-api-cluster</span>
-                            <span class="font-mono text-xs">$1,240</span>
-                        </div>
-                        <div class="flex items-center justify-between text-sm py-1.5">
-                            <span class="flex items-center gap-2"><span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> S3 —
-                                telemetry-archive</span>
-                            <span class="font-mono text-xs">$312</span>
-                        </div>
-                        <div class="flex items-center justify-between text-sm py-1.5">
-                            <span class="flex items-center gap-2"><span
-                                    class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> CloudWatch — logs</span>
-                            <span class="font-mono text-xs">$98</span>
-                        </div>
+                <div class="absolute -bottom-4 -left-4 card px-4 py-3 soft-shadow flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center"><i
+                            class="fa-solid fa-bell text-green-600 text-xs"></i></div>
+                    <div>
+                        <div class="text-[10px] uppercase tracking-wider text-gray-500">Budget Alert</div>
+                        <div class="text-xs font-semibold text-gray-900">Approaching limit (85%)</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ARCHITECTURE -->
-    <section id="architecture" class="py-24">
+    <!-- DASHBOARD PREVIEW SECTION -->
+    <section id="dashboard" class="py-24 bg-gray-50 border-y border-gray-200">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto">
-                <span
-                    class="badge-glow inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold">Architecture</span>
-                <h2 class="font-display font-bold text-4xl md:text-5xl tracking-tight mt-4">A stack that's <span
-                        class="grad-text">deliberately small.</span></h2>
-                <p class="text-[var(--muted)] mt-4 text-lg">Single Go binary. Embedded SQLite. Server-rendered
-                    templates. The whole thing fits in a 25MB container.</p>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Analytics Dashboard</span>
+                <h2 class="font-display font-bold text-3xl md:text-4xl tracking-tight mt-2">All your cloud metrics in
+                    one view</h2>
+                <p class="text-gray-500 mt-4 text-lg">Real-time KPIs, spending trends, and provider breakdowns rendered
+                    cleanly through Go HTML templates.</p>
             </div>
 
-            <!-- FLOW DIAGRAM -->
-            <div class="mt-16 grid lg:grid-cols-5 gap-4 items-stretch">
-                <div class="card p-6 text-center reveal">
-                    <i class="fa-solid fa-globe text-emerald-600 text-2xl"></i>
-                    <div class="font-display font-semibold mt-3">Browser</div>
-                    <div class="text-xs text-[var(--muted)] mt-1">HTML + JS</div>
+            <div class="card p-6 lg:p-8 soft-shadow">
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+                    <div>
+                        <div class="text-xs font-mono text-gray-400 uppercase">CloudSpend Workspace</div>
+                        <div class="font-display font-bold text-xl mt-1">Production Infrastructure</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="px-3 py-1.5 text-xs font-medium bg-gray-100 rounded-md hover:bg-gray-200 transition">Last
+                            30 days</button>
+                        <button
+                            class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-md transition">Last
+                            7 days</button>
+                    </div>
                 </div>
-                <div class="flex items-center justify-center text-emerald-400"><i class="fa-solid fa-arrow-right"></i>
-                </div>
-                <div class="card p-6 text-center reveal" style="border-color:var(--accent);">
-                    <i class="fa-solid fa-server text-emerald-600 text-2xl"></i>
-                    <div class="font-display font-semibold mt-3">Go · Gin</div>
-                    <div class="text-xs text-[var(--muted)] mt-1">REST + templates</div>
-                </div>
-                <div class="flex items-center justify-center text-emerald-400"><i class="fa-solid fa-arrow-right"></i>
-                </div>
-                <div class="card p-6 text-center reveal">
-                    <i class="fa-solid fa-database text-emerald-600 text-2xl"></i>
-                    <div class="font-display font-semibold mt-3">SQLite</div>
-                    <div class="text-xs text-[var(--muted)] mt-1">File-based store</div>
-                </div>
-            </div>
 
-            <!-- DEPLOY PIPELINE -->
-            <div class="mt-14 card p-8">
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><i
-                                    class="fa-solid fa-code text-emerald-600"></i></div>
-                            <div class="font-display font-semibold">1 · Build</div>
+                <div class="grid lg:grid-cols-3 gap-5 mb-8">
+                    <div class="p-5 rounded-xl border border-gray-200 bg-white hover:shadow-sm transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Monthly
+                                Spend</span>
+                            <i class="fa-solid fa-dollar-sign text-gray-300"></i>
                         </div>
-                        <p class="text-sm text-[var(--muted)] leading-relaxed">Multi-stage Dockerfile compiles Go
-                            binary, strips debug symbols, and packages into an Alpine base image under 25MB.</p>
-                        <div
-                            class="mt-3 font-mono text-xs bg-[var(--bg-soft)] border border-[var(--border)] rounded-lg p-3 text-[var(--muted)]">
-                            <span class="text-emerald-600">FROM</span> golang:1.22-alpine <span
-                                class="text-emerald-600">AS</span> build<br>
-                            <span class="text-emerald-600">RUN</span> go build -ldflags="-s -w"<br>
-                            <span class="text-emerald-600">FROM</span> alpine:3.19
+                        <div class="font-display font-bold text-3xl mt-3 text-gray-900">$48,250.00</div>
+                        <div class="flex items-center gap-2 mt-2 text-xs">
+                            <span class="text-green-600 font-medium flex items-center gap-1"><i
+                                    class="fa-solid fa-arrow-down"></i> 12.4%</span>
+                            <span class="text-gray-400">vs last month</span>
                         </div>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><i
-                                    class="fa-brands fa-docker text-emerald-600"></i></div>
-                            <div class="font-display font-semibold">2 · Push</div>
+                    <div class="p-5 rounded-xl border border-gray-200 bg-white hover:shadow-sm transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Budget
+                                Utilization</span>
+                            <i class="fa-solid fa-chart-pie text-gray-300"></i>
                         </div>
-                        <p class="text-sm text-[var(--muted)] leading-relaxed">Image is tagged with commit SHA and
-                            pushed to Azure Container Registry. Vulnerability scans run automatically before promotion.
-                        </p>
-                        <div
-                            class="mt-3 font-mono text-xs bg-[var(--bg-soft)] border border-[var(--border)] rounded-lg p-3 text-[var(--muted)]">
-                            <span class="text-emerald-600">docker push</span><br>
-                            myacr.azurecr.io/cloudspend:<span class="text-emerald-600">sha-7f3a2b</span>
+                        <div class="font-display font-bold text-3xl mt-3 text-gray-900">74%</div>
+                        <div class="flex items-center gap-2 mt-2 text-xs">
+                            <span class="text-yellow-600 font-medium">Healthy</span>
+                            <span class="text-gray-400">$74k of $100k</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-gray-100 rounded-full mt-3 overflow-hidden">
+                            <div class="bar-grow h-full bg-green-500 rounded-full" style="width: 74%;"></div>
                         </div>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><i
-                                    class="fa-brands fa-microsoft text-emerald-600"></i></div>
-                            <div class="font-display font-semibold">3 · Deploy</div>
+                    <div class="p-5 rounded-xl border border-gray-200 bg-white hover:shadow-sm transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Active Cloud
+                                Providers</span>
+                            <i class="fa-solid fa-cloud text-gray-300"></i>
                         </div>
-                        <p class="text-sm text-[var(--muted)] leading-relaxed">Azure App Service pulls the latest image,
-                            runs health checks, and swaps slots for zero-downtime rollouts.</p>
-                        <div
-                            class="mt-3 font-mono text-xs bg-[var(--bg-soft)] border border-[var(--border)] rounded-lg p-3 text-[var(--muted)]">
-                            <span class="text-emerald-600">az webapp config</span> container set<br>
-                            --image cloudspend:<span class="text-emerald-600">latest</span>
+                        <div class="font-display font-bold text-3xl mt-3 text-gray-900">03</div>
+                        <div class="flex items-center gap-2 mt-2 text-xs text-gray-400">
+                            <i class="fa-brands fa-aws"></i> AWS
+                            <i class="fa-brands fa-google"></i> GCP
+                            <i class="fa-brands fa-microsoft"></i> Azure
                         </div>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-5 mb-8">
+                    <div class="lg:col-span-2 p-5 rounded-xl border border-gray-200 bg-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-gray-900">Expense Trend</h3>
+                            <span class="text-xs text-gray-400 font-mono">Jan - Jun 2024</span>
+                        </div>
+                        <div class="flex items-end justify-between h-48 gap-3 mt-6 px-2">
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-gray-100 rounded-t-md bar-grow"
+                                    style="height: 30%; animation-delay: .1s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">Jan</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-gray-200 rounded-t-md bar-grow"
+                                    style="height: 45%; animation-delay: .15s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">Feb</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-gray-300 rounded-t-md bar-grow"
+                                    style="height: 55%; animation-delay: .2s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">Mar</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-green-300 rounded-t-md bar-grow"
+                                    style="height: 65%; animation-delay: .25s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">Apr</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-green-400 rounded-t-md bar-grow"
+                                    style="height: 80%; animation-delay: .3s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">May</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-green-600 rounded-t-md bar-grow"
+                                    style="height: 70%; animation-delay: .35s;"></div>
+                                <span class="text-[10px] font-mono text-gray-500">Jun</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5 rounded-xl border border-gray-200 bg-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-gray-900">Provider Distribution</h3>
+                            <i class="fa-solid fa-ellipsis text-gray-300"></i>
+                        </div>
+                        <div class="relative w-32 h-32 mx-auto mt-4">
+                            <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
+                                <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#f3f4f6" stroke-width="4">
+                                </circle>
+                                <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#16a34a" stroke-width="4"
+                                    stroke-dasharray="62 100" stroke-linecap="round"></circle>
+                                <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#22c55e" stroke-width="4"
+                                    stroke-dasharray="24 100" stroke-dashoffset="-62" stroke-linecap="round"></circle>
+                                <circle cx="18" cy="18" r="15.91549" fill="none" stroke="#86efac" stroke-width="4"
+                                    stroke-dasharray="14 100" stroke-dashoffset="-86" stroke-linecap="round"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="font-display font-bold text-xl text-gray-900">100%</span>
+                                <span class="text-[10px] text-gray-500">Total</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="flex items-center gap-2"><span
+                                        class="w-2 h-2 rounded-full bg-green-600"></span> AWS</span>
+                                <span class="font-mono text-gray-600">62%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="flex items-center gap-2"><span
+                                        class="w-2 h-2 rounded-full bg-green-500"></span> Google Cloud</span>
+                                <span class="font-mono text-gray-600">24%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="flex items-center gap-2"><span
+                                        class="w-2 h-2 rounded-full bg-green-300"></span> Azure</span>
+                                <span class="font-mono text-gray-600">14%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-xl border border-gray-200 bg-white">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-900">Recent Expense Records</h3>
+                        <a href="#" class="text-xs font-medium text-green-600 hover:text-green-700">View All</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr
+                                    class="text-left text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
+                                    <th class="pb-3 font-medium">Service</th>
+                                    <th class="pb-3 font-medium">Provider</th>
+                                    <th class="pb-3 font-medium">Category</th>
+                                    <th class="pb-3 font-medium">Date</th>
+                                    <th class="pb-3 font-medium text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50">
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="py-3 font-medium text-gray-900">EC2 Compute Instances</td>
+                                    <td class="py-3 text-gray-600"><span class="inline-flex items-center gap-1.5"><i
+                                                class="fa-brands fa-aws text-orange-500"></i> AWS</span></td>
+                                    <td class="py-3 text-gray-600">Compute</td>
+                                    <td class="py-3 text-gray-500 font-mono text-xs">Jun 15, 2024</td>
+                                    <td class="py-3 text-right font-mono text-gray-900 font-medium">$12,450.00</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="py-3 font-medium text-gray-900">Cloud Storage</td>
+                                    <td class="py-3 text-gray-600"><span class="inline-flex items-center gap-1.5"><i
+                                                class="fa-brands fa-google text-blue-500"></i> GCP</span></td>
+                                    <td class="py-3 text-gray-600">Storage</td>
+                                    <td class="py-3 text-gray-500 font-mono text-xs">Jun 14, 2024</td>
+                                    <td class="py-3 text-right font-mono text-gray-900 font-medium">$3,120.50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="py-3 font-medium text-gray-900">App Service Plan</td>
+                                    <td class="py-3 text-gray-600"><span class="inline-flex items-center gap-1.5"><i
+                                                class="fa-brands fa-microsoft text-cyan-600"></i> Azure</span></td>
+                                    <td class="py-3 text-gray-600">Hosting</td>
+                                    <td class="py-3 text-gray-500 font-mono text-xs">Jun 12, 2024</td>
+                                    <td class="py-3 text-right font-mono text-gray-900 font-medium">$1,890.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="py-24 bg-[var(--bg-soft)] border-y border-[var(--border)]">
+    <!-- FEATURES SECTION -->
+    <section id="features" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto">
-                <span
-                    class="badge-glow inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold">Pricing</span>
-                <h2 class="font-display font-bold text-4xl md:text-5xl tracking-tight mt-4">Pricing that scales <span
-                        class="grad-text">with your stack.</span></h2>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Core Features</span>
+                <h2 class="font-display font-bold text-3xl md:text-4xl tracking-tight mt-2">Built for engineering
+                    efficiency</h2>
+                <p class="text-gray-500 mt-4 text-lg">Everything you need to monitor and manage your cloud
+                    infrastructure expenses.</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-5 mt-12 items-stretch">
-                <div class="card p-8 flex flex-col">
-                    <div class="font-display font-semibold text-lg">Starter</div>
-                    <div class="text-sm text-[var(--muted)]">For solo devs & side projects</div>
-                    <div class="mt-5 flex items-end gap-1">
-                        <span class="font-display font-bold text-4xl">$0</span>
-                        <span class="text-[var(--muted)] mb-1.5 text-sm">/mo</span>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card p-8 reveal">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mb-5">
+                        <i class="fa-solid fa-receipt text-green-600 text-lg"></i>
                     </div>
-                    <ul class="mt-6 space-y-3 text-sm flex-1">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> 1 cloud
-                            provider</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Up to 500
-                            expense records</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Standard
-                            dashboard</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Community
-                            support</li>
+                    <h3 class="font-display font-semibold text-xl text-gray-900">Expense Tracking</h3>
+                    <p class="text-gray-500 text-sm mt-3 leading-relaxed">Record and manage cloud expenses with ease.
+                        Perform CRUD operations seamlessly through our secure REST API.</p>
+                    <ul class="mt-6 space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            REST API integration</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Categorized tagging</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Audit logs</li>
                     </ul>
-                    <a href="#" class="btn-ghost text-center py-3 rounded-xl font-semibold mt-8 block">Get started</a>
                 </div>
 
-                <div class="card p-8 flex flex-col relative"
-                    style="border-color:var(--accent);box-shadow:0 20px 60px -20px rgba(16,185,129,0.35);">
+                <div class="card p-8 reveal" style="transition-delay: .1s;">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mb-5">
+                        <i class="fa-solid fa-gauge-high text-green-600 text-lg"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl text-gray-900">Budget Intelligence</h3>
+                    <p class="text-gray-500 text-sm mt-3 leading-relaxed">Set spending limits and monitor budget
+                        utilization. Get notified before you hit your cloud spending ceiling.</p>
+                    <ul class="mt-6 space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Custom budget thresholds</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Real-time alerts</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Forecasting</li>
+                    </ul>
+                </div>
+
+                <div class="card p-8 reveal" style="transition-delay: .2s;">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mb-5">
+                        <i class="fa-solid fa-chart-column text-green-600 text-lg"></i>
+                    </div>
+                    <h3 class="font-display font-semibold text-xl text-gray-900">Analytics Dashboard</h3>
+                    <p class="text-gray-500 text-sm mt-3 leading-relaxed">Visualize spending trends and provider
+                        distribution. Real-time KPI metrics delivered through Go HTML templates.</p>
+                    <ul class="mt-6 space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Real-time KPI metrics</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Trend visualizations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500 text-xs"></i>
+                            Provider breakdowns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNOLOGY STACK SECTION -->
+    <section class="py-24 bg-gray-50 border-y border-gray-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Technology Stack</span>
+                <h2 class="font-display font-bold text-3xl md:text-4xl tracking-tight mt-2">A robust, lightweight
+                    foundation</h2>
+                <p class="text-gray-500 mt-4 text-lg">Built with performance and simplicity in mind using modern, proven
+                    technologies.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="card p-6 reveal text-center">
                     <div
-                        class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-xs font-semibold rounded-full">
-                        Most popular</div>
-                    <div class="font-display font-semibold text-lg">Team</div>
-                    <div class="text-sm text-[var(--muted)]">For growing engineering teams</div>
-                    <div class="mt-5 flex items-end gap-1">
-                        <span class="font-display font-bold text-4xl">$29</span>
-                        <span class="text-[var(--muted)] mb-1.5 text-sm">/mo</span>
+                        class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center mx-auto mb-4 soft-shadow">
+                        <i class="fa-solid fa-code text-gray-800 text-xl"></i>
                     </div>
-                    <ul class="mt-6 space-y-3 text-sm flex-1">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Unlimited
-                            providers</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Unlimited
-                            expense records</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i>
-                            Forecasting & alerts</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> REST API
-                            access</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Priority
-                            email support</li>
-                    </ul>
-                    <a href="#" class="btn-primary text-center py-3 rounded-xl font-semibold mt-8 block">Start 14-day
-                        trial</a>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Backend</div>
+                    <h3 class="font-display font-semibold text-lg text-gray-900">Go & Gin Framework</h3>
+                    <p class="text-sm text-gray-500 mt-2">High-performance compiled language with a lightweight web
+                        framework for rapid API development.</p>
                 </div>
 
-                <div class="card p-8 flex flex-col">
-                    <div class="font-display font-semibold text-lg">Enterprise</div>
-                    <div class="text-sm text-[var(--muted)]">Self-hosted, audited, SLA-backed</div>
-                    <div class="mt-5 flex items-end gap-1">
-                        <span class="font-display font-bold text-4xl">Custom</span>
+                <div class="card p-6 reveal text-center" style="transition-delay: .1s;">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center mx-auto mb-4 soft-shadow">
+                        <i class="fa-solid fa-database text-gray-800 text-xl"></i>
                     </div>
-                    <ul class="mt-6 space-y-3 text-sm flex-1">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i>
-                            Self-hosted deployment</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> SSO /
-                            SAML integration</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Custom
-                            retention policies</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Dedicated
-                            solutions engineer</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> 99.9%
-                            uptime SLA</li>
-                    </ul>
-                    <a href="#" class="btn-ghost text-center py-3 rounded-xl font-semibold mt-8 block">Contact sales</a>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Database</div>
+                    <h3 class="font-display font-semibold text-lg text-gray-900">SQLite</h3>
+                    <p class="text-sm text-gray-500 mt-2">Embedded, zero-configuration relational database ensuring fast
+                        queries and easy deployments.</p>
+                </div>
+
+                <div class="card p-6 reveal text-center" style="transition-delay: .2s;">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center mx-auto mb-4 soft-shadow">
+                        <i class="fa-solid fa-window-restore text-gray-800 text-xl"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Frontend</div>
+                    <h3 class="font-display font-semibold text-lg text-gray-900">Go HTML Templates</h3>
+                    <p class="text-sm text-gray-500 mt-2">Server-side rendering for fast initial load times and
+                        simplified deployment architecture.</p>
+                </div>
+
+                <div class="card p-6 reveal text-center" style="transition-delay: .3s;">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center mx-auto mb-4 soft-shadow">
+                        <i class="fa-brands fa-docker text-gray-800 text-xl"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Deployment</div>
+                    <h3 class="font-display font-semibold text-lg text-gray-900">Docker & Azure</h3>
+                    <p class="text-sm text-gray-500 mt-2">Containerized deployment to Azure App Service via Azure
+                        Container Registry.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-24">
+    <!-- DEPLOYMENT ARCHITECTURE SECTION -->
+    <section class="py-24 bg-white">
         <div class="max-w-5xl mx-auto px-6">
-            <div class="card p-12 md:p-16 text-center relative overflow-hidden"
-                style="background:linear-gradient(135deg,#ecfdf5 0%,#ffffff 60%);border-color:rgba(16,185,129,0.25);">
-                <div class="hero-blob bg-emerald-200"
-                    style="width:300px;height:300px;top:-80px;right:-80px;opacity:.6;"></div>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Deployment
+                    Architecture</span>
+                <h2 class="font-display font-bold text-3xl md:text-4xl tracking-tight mt-2">How CloudSpend is deployed
+                </h2>
+                <p class="text-gray-500 mt-4 text-lg">A streamlined containerized flow from the user to the database.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <div
+                    class="w-full max-w-md p-5 rounded-xl border border-gray-200 bg-white soft-shadow flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><i
+                            class="fa-solid fa-user text-gray-600"></i></div>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-gray-500">Client</div>
+                        <div class="font-semibold text-gray-900">User</div>
+                    </div>
+                </div>
+                <div class="w-24 arch-arrow"></div>
+
+                <div
+                    class="w-full max-w-md p-5 rounded-xl border border-gray-200 bg-white soft-shadow flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><i
+                            class="fa-brands fa-microsoft text-blue-600"></i></div>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-gray-500">Hosting</div>
+                        <div class="font-semibold text-gray-900">Azure App Service</div>
+                    </div>
+                </div>
+                <div class="w-24 arch-arrow"></div>
+
+                <div
+                    class="w-full max-w-md p-5 rounded-xl border border-gray-200 bg-white soft-shadow flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><i
+                            class="fa-brands fa-docker text-blue-600"></i></div>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-gray-500">Container</div>
+                        <div class="font-semibold text-gray-900">Docker Container</div>
+                    </div>
+                </div>
+                <div class="w-24 arch-arrow"></div>
+
+                <div
+                    class="w-full max-w-md p-5 rounded-xl border-2 border-green-200 bg-green-50 soft-shadow flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center"><i
+                            class="fa-solid fa-chart-line text-green-600"></i></div>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-green-700">Application</div>
+                        <div class="font-semibold text-gray-900">CloudSpend Application</div>
+                    </div>
+                </div>
+                <div class="w-24 arch-arrow"></div>
+
+                <div
+                    class="w-full max-w-md p-5 rounded-xl border border-gray-200 bg-white soft-shadow flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><i
+                            class="fa-solid fa-database text-gray-600"></i></div>
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-gray-500">Storage</div>
+                        <div class="font-semibold text-gray-900">SQLite Database</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CLOUDSPEND SECTION -->
+    <section class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Why CloudSpend</span>
+                <h2 class="font-display font-bold text-3xl md:text-4xl tracking-tight mt-2">Engineered for reliability
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="card p-6 reveal text-center">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-shield-halved text-green-600 text-lg"></i>
+                    </div>
+                    <div class="font-display font-bold text-3xl text-gray-900">99.9%</div>
+                    <div class="text-sm font-medium text-gray-700 mt-2">Availability</div>
+                    <p class="text-xs text-gray-500 mt-2">High uptime SLA backed by Azure infrastructure.</p>
+                </div>
+
+                <div class="card p-6 reveal text-center" style="transition-delay: .1s;">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-bolt text-green-600 text-lg"></i>
+                    </div>
+                    <div class="font-display font-bold text-3xl text-gray-900">Real-Time</div>
+                    <div class="text-sm font-medium text-gray-700 mt-2">Insights</div>
+                    <p class="text-xs text-gray-500 mt-2">Live KPI updates as expenses occur.</p>
+                </div>
+
+                <div class="card p-6 reveal text-center" style="transition-delay: .2s;">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-code-branch text-green-600 text-lg"></i>
+                    </div>
+                    <div class="font-display font-bold text-3xl text-gray-900">REST API</div>
+                    <div class="text-sm font-medium text-gray-700 mt-2">Powered</div>
+                    <p class="text-xs text-gray-500 mt-2">Clean JSON endpoints powered by Gin framework.</p>
+                </div>
+
+                <div class="card p-6 reveal text-center" style="transition-delay: .3s;">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-brands fa-docker text-green-600 text-lg"></i>
+                    </div>
+                    <div class="font-display font-bold text-3xl text-gray-900">Container</div>
+                    <div class="text-sm font-medium text-gray-700 mt-2">Ready</div>
+                    <p class="text-xs text-gray-500 mt-2">Deployable anywhere via standard Docker images.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="rounded-2xl bg-gray-900 p-10 md:p-14 text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-green-600 rounded-full blur-3xl opacity-20"></div>
                 <div class="relative">
-                    <h2 class="font-display font-bold text-4xl md:text-5xl tracking-tight">Stop guessing.<br><span
-                            class="grad-text">Start budgeting.</span></h2>
-                    <p class="text-[var(--muted)] mt-4 text-lg max-w-xl mx-auto">Deploy CloudSpend to Azure in under
-                        five minutes. Spin up the container, point it at your billing export, and watch your dashboard
-                        come alive.</p>
-                    <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
-                        <a href="#" class="btn-primary px-6 py-3.5 rounded-xl font-semibold flex items-center gap-2">
-                            <i class="fa-brands fa-docker"></i> Pull from ACR
+                    <h2 class="font-display font-bold text-3xl md:text-4xl text-white tracking-tight">Start tracking
+                        your cloud expenses today</h2>
+                    <p class="text-gray-400 mt-4 text-lg max-w-xl mx-auto">Join thousands of teams optimizing their
+                        cloud infrastructure costs with CloudSpend.</p>
+                    <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                        <a href="#"
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                            Get Started <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
                         <a href="#"
-                            class="btn-ghost px-6 py-3.5 rounded-xl font-semibold text-[var(--fg)] flex items-center gap-2">
-                            <i class="fa-solid fa-book"></i> Read the docs
-                        </a>
+                            class="border border-gray-700 text-white hover:bg-gray-800 px-6 py-3 rounded-lg text-sm font-semibold transition">Contact
+                            Sales</a>
                     </div>
                 </div>
             </div>
@@ -845,71 +841,48 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="border-t border-[var(--border)] py-14">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-5 gap-10">
-            <div class="md:col-span-2">
-                <a href="#" class="flex items-center gap-2.5">
-                    <div
-                        class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center">
-                        <i class="fa-solid fa-cloud text-white text-sm"></i>
-                    </div>
-                    <span class="font-display font-bold text-xl">CloudSpend</span>
-                </a>
-                <p class="text-sm text-[var(--muted)] mt-4 max-w-sm">Cloud expense and budget intelligence for
-                    engineering teams. Built in Go. Deployed in a 25MB container.</p>
-                <div class="flex gap-3 mt-5">
-                    <a href="#"
-                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-emerald-400 hover:text-emerald-600 transition"><i
-                            class="fa-brands fa-github"></i></a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-emerald-400 hover:text-emerald-600 transition"><i
-                            class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--muted)] hover:border-emerald-400 hover:text-emerald-600 transition"><i
-                            class="fa-brands fa-discord"></i></a>
+    <footer class="bg-gray-50 border-t border-gray-200 py-14">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10">
+                <div class="md:col-span-2">
+                    <a href="#" class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center soft-shadow">
+                            <i class="fa-solid fa-chart-line text-white text-sm"></i>
+                        </div>
+                        <span class="font-display font-bold text-lg tracking-tight">CloudSpend</span>
+                    </a>
+                    <p class="text-sm text-gray-500 mt-4 max-w-sm">Cloud Expense & Budget Intelligence Platform built
+                        for modern engineering teams.</p>
+                </div>
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-4">Resources</div>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-green-600 flex items-center gap-2 transition"><i
+                                    class="fa-brands fa-github text-xs"></i> GitHub</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-green-600 flex items-center gap-2 transition"><i
+                                    class="fa-solid fa-book text-xs"></i> Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 mb-4">Company</div>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-green-600 flex items-center gap-2 transition"><i
+                                    class="fa-solid fa-envelope text-xs"></i> Contact</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-green-600 flex items-center gap-2 transition"><i
+                                    class="fa-solid fa-shield-halved text-xs"></i> Privacy Policy</a></li>
+                    </ul>
                 </div>
             </div>
-            <div>
-                <div class="text-xs font-mono uppercase text-[var(--muted)] tracking-wider mb-3">Product</div>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-emerald-600">Features</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Dashboard</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Pricing</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Changelog</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="text-xs font-mono uppercase text-[var(--muted)] tracking-wider mb-3">Resources</div>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-emerald-600">Documentation</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">API reference</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Architecture guide</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Status page</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="text-xs font-mono uppercase text-[var(--muted)] tracking-wider mb-3">Company</div>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-emerald-600">About</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Blog</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Careers</a></li>
-                    <li><a href="#" class="hover:text-emerald-600">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-        <div
-            class="max-w-7xl mx-auto px-6 mt-10 pt-6 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--muted)]">
-            <div>© 2025 CloudSpend. Built with Go + Gin + SQLite. Deployed on Azure.</div>
-            <div class="flex gap-5 font-mono">
-                <a href="#" class="hover:text-emerald-600">Privacy</a>
-                <a href="#" class="hover:text-emerald-600">Terms</a>
-                <a href="#" class="hover:text-emerald-600">Security</a>
+            <div
+                class="border-t border-gray-200 mt-10 pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+                <div>© 2024 CloudSpend. All rights reserved.</div>
+                <div class="font-mono">Built with Go · Gin · SQLite · Docker</div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Reveal on scroll
+        // Reveal on scroll animation
         const io = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -917,17 +890,17 @@
                     io.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.12 });
+        }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-        // Smooth nav active state on scroll
+        // Nav border on scroll
         const nav = document.querySelector('nav');
-        let lastY = 0;
         window.addEventListener('scroll', () => {
-            const y = window.scrollY;
-            if (y > 20) nav.style.boxShadow = '0 4px 24px -12px rgba(0,0,0,0.08)';
-            else nav.style.boxShadow = 'none';
-            lastY = y;
+            if (window.scrollY > 10) {
+                nav.style.boxShadow = '0 1px 0 0 rgba(0,0,0,0.05)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
         });
     </script>
 </body>
