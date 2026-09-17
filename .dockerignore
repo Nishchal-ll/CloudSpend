@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+.env.local
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+cloudspend
+CloudSpend
+*.exe
+*.out
+*.test
+.vscode
+.idea
+README.md

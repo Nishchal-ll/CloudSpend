@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="navbar">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">CloudSpend</span>
+                    <span class="brand-tag">Azure Cloud Edition</span>
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    Dashboard
+                </a>
+                <a href="/expenses" class="nav-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Expenses
+                </a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="cloud-status-badge">
+                    <span class="status-dot"></span>
+                    <span>Azure Ready</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>
+                    Add Expense
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero / Welcome Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Cloud Overview & Cost Intelligence</h1>
+                    <p class="page-subtitle">Track, analyze, and optimize multi-cloud infrastructure spending across Azure, AWS, and GCP.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="openBudgetModal('{{ .summary.MonthlyBudget }}')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Adjust Budget
+                    </button>
+                    <a href="/expenses" class="btn btn-outline">
+                        Manage All
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Metric Cards -->
+            <div class="metrics-grid">
+                <!-- Card 1: Monthly Budget -->
+                <div class="card metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Monthly Budget</span>
+                        <div class="metric-icon icon-blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="disp-budget">${{ printf "%.2f" .summary.MonthlyBudget }}</div>
+                    <div class="metric-footer">
+                        <span class="badge badge-info">Target Cap</span>
+                        <span class="text-muted">Active Cycle</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Total Spent -->
+                <div class="card metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Month-to-Date Spend</span>
+                        <div class="metric-icon icon-purple">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value text-accent">${{ printf "%.2f" .summary.TotalSpent }}</div>
+                    <div class="metric-footer">
+                        <span class="badge {{ if gt .summary.PercentUsed 85.0 }}badge-danger{{ else if gt .summary.PercentUsed 60.0 }}badge-warning{{ else }}badge-success{{ end }}">
+                            {{ printf "%.1f" .summary.PercentUsed }}% utilized
+                        </span>
+                        <span class="text-muted">{{ .summary.TotalExpensesCount }} services</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Remaining Budget -->
+                <div class="card metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Remaining Balance</span>
+                        <div class="metric-icon {{ if lt .summary.RemainingBudget 0.0 }}icon-red{{ else }}icon-green{{ end }}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value {{ if lt .summary.RemainingBudget 0.0 }}text-danger{{ else }}text-success{{ end }}">
+                        ${{ printf "%.2f" .summary.RemainingBudget }}
+                    </div>
+                    <div class="metric-footer">
+                        <span class="badge {{ if lt .summary.RemainingBudget 0.0 }}badge-danger{{ else }}badge-success{{ end }}">
+                            {{ if lt .summary.RemainingBudget 0.0 }}Over Budget{{ else }}Safe Range{{ end }}
+                        </span>
+                        <span class="text-muted">Auto Calculated</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Burn Rate / Status -->
+                <div class="card metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Budget Consumption</span>
+                        <div class="metric-icon icon-cyan">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-progress-wrapper">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar {{ if gt .summary.PercentUsed 90.0 }}progress-danger{{ else if gt .summary.PercentUsed 70.0 }}progress-warning{{ else }}progress-success{{ end }}" 
+                                 style="width: {{ if gt .summary.PercentUsed 100.0 }}100{{ else }}{{ .summary.PercentUsed }}{{ end }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="metric-footer">
+                        <span class="text-secondary">{{ printf "%.1f" .summary.PercentUsed }}% of ${{ printf "%.0f" .summary.MonthlyBudget }} limit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Distribution & Breakdown -->
+            <div class="dashboard-grid">
+                <!-- Left: Category Distribution -->
+                <div class="card panel-card">
+                    <div class="panel-header">
+                        <div>
+                            <h2 class="panel-title">Spending by Category</h2>
+                            <p class="panel-subtitle">Expense distribution across infrastructure domains</p>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="breakdown-list">
+                            {{ if .summary.CategoryBreakdown }}
+                                {{ range .summary.CategoryBreakdown }}
+                                <div class="breakdown-item">
+                                    <div class="breakdown-info">
+                                        <div class="breakdown-name-group">
+                                            <span class="category-pill pill-{{ .Category }}">{{ .Category }}</span>
+                                            <span class="breakdown-count">{{ .Count }} resource{{ if ne .Count 1 }}s{{ end }}</span>
+                                        </div>
+                                        <div class="breakdown-amount-group">
+                                            <span class="breakdown-amount">${{ printf "%.2f" .Total }}</span>
+                                            <span class="breakdown-pct">{{ printf "%.1f" .Percentage }}%</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar-container progress-sm">
+                                        <div class="progress-bar bar-category-{{ .Category }}" style="width: {{ .Percentage }}%;"></div>
+                                    </div>
+                                </div>
+                                {{ end }}
+                            {{ else }}
+                                <div class="empty-state-sm">
+                                    <p class="text-muted">No categorized expenses recorded yet.</p>
+                                </div>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Cloud Provider Share -->
+                <div class="card panel-card">
+                    <div class="panel-header">
+                        <div>
+                            <h2 class="panel-title">Cloud Provider Share</h2>
+                            <p class="panel-subtitle">Cost breakdown grouped by cloud platform</p>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="providers-list">
+                            {{ if .summary.ProviderBreakdown }}
+                                {{ range .summary.ProviderBreakdown }}
+                                <div class="provider-item">
+                                    <div class="provider-meta">
+                                        <span class="provider-badge badge-{{ .Provider }}">{{ .Provider }}</span>
+                                        <span class="provider-pct">{{ printf "%.1f" .Percentage }}%</span>
+                                    </div>
+                                    <div class="provider-cost">${{ printf "%.2f" .Total }}</div>
+                                    <div class="progress-bar-container progress-sm">
+                                        <div class="progress-bar bar-prov-{{ .Provider }}" style="width: {{ .Percentage }}%;"></div>
+                                    </div>
+                                </div>
+                                {{ end }}
+                            {{ else }}
+                                <div class="empty-state-sm">
+                                    <p class="text-muted">No provider information recorded yet.</p>
+                                </div>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Expenses Table -->
+            <div class="card table-card">
+                <div class="table-header">
+                    <div>
+                        <h2 class="panel-title">Recent Cloud Transactions</h2>
+                        <p class="panel-subtitle">Latest recorded cloud infrastructure items</p>
+                    </div>
+                    <a href="/expenses" class="btn btn-sm btn-outline">View All ({{ .summary.TotalExpensesCount }})</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Resource / Service</th>
+                                <th>Provider</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ if .summary.RecentExpenses }}
+                                {{ range .summary.RecentExpenses }}
+                                <tr>
+                                    <td>
+                                        <div class="service-name-cell">
+                                            <span class="service-title">{{ .Title }}</span>
+                                            {{ if .Description }}<span class="service-desc">{{ .Description }}</span>{{ end }}
+                                        </div>
+                                    </td>
+                                    <td><span class="provider-badge badge-{{ .Provider }}">{{ .Provider }}</span></td>
+                                    <td><span class="category-pill pill-{{ .Category }}">{{ .Category }}</span></td>
+                                    <td class="text-mono">{{ .ExpenseDate }}</td>
+                                    <td class="cost-cell">${{ printf "%.2f" .Amount }}</td>
+                                    <td class="text-right">
+                                        <a href="/expenses?search={{ .Title }}" class="btn-icon" title="View in Expenses">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{ end }}
+                            {{ else }}
+                                <tr>
+                                    <td colspan="6" class="text-center py-6 text-muted">
+                                        No expenses added yet. Click <strong>Add Expense</strong> to record your first cost item!
+                                    </td>
+                                </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Azure Deployment / System Architecture Info Card -->
+            <div class="card info-banner-card">
+                <div class="info-banner-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+                </div>
+                <div class="info-banner-text">
+                    <h4>Cloud Native Architecture</h4>
+                    <p>Powered by <strong>Go (Gin)</strong> & <strong>SQLite</strong>. Containerized with <strong>Docker</strong> multi-stage builds and ready for <strong>Azure Container Registry (ACR)</strong> and <strong>Azure App Service</strong>.</p>
+                </div>
+                <div class="info-banner-links">
+                    <span class="tech-chip">Go 1.22</span>
+                    <span class="tech-chip">Gin Gonic</span>
+                    <span class="tech-chip">Docker</span>
+                    <span class="tech-chip">Azure</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 <strong>CloudSpend</strong> — Cloud Expense & Budget Intelligence Platform.</p>
+                <div class="footer-links">
+                    <a href="https://github.com/Nishchal-ll/CloudSpend" target="_blank" rel="noopener">GitHub Repository</a>
+                    <span>•</span>
+                    <a href="/expenses">Expense Manager</a>
+                    <span>•</span>
+                    <a href="/api/dashboard" target="_blank">JSON API</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Expense Modal -->
+    <div id="expenseModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modalTitle" class="modal-title">Add Cloud Expense</h3>
+                <button type="button" class="btn-close" onclick="closeExpenseModal()">&times;</button>
+            </div>
+            <form id="expenseForm" onsubmit="handleExpenseSubmit(event)">
+                <input type="hidden" id="expenseId" value="">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="expenseTitle">Resource / Service Name <span class="req">*</span></label>
+                        <input type="text" id="expenseTitle" class="form-input" placeholder="e.g. Azure App Service (Linux B1)" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="expenseProvider">Cloud Provider <span class="req">*</span></label>
+                            <select id="expenseProvider" class="form-select" required>
+                                <option value="Azure">Azure</option>
+                                <option value="AWS">AWS</option>
+                                <option value="GCP">GCP</option>
+                                <option value="Cloudflare">Cloudflare</option>
+                                <option value="GitHub">GitHub</option>
+                                <option value="DigitalOcean">DigitalOcean</option>
+                                <option value="SaaS">SaaS</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="expenseCategory">Category <span class="req">*</span></label>
+                            <select id="expenseCategory" class="form-select" required>
+                                <option value="Compute">Compute</option>
+                                <option value="Database">Database</option>
+                                <option value="Storage">Storage</option>
+                                <option value="Networking">Networking</option>
+                                <option value="Containers">Containers</option>
+                                <option value="Monitoring">Monitoring</option>
+                                <option value="DevOps">DevOps</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="expenseAmount">Cost / Amount (USD) <span class="req">*</span></label>
+                            <div class="input-prefix-wrapper">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="expenseAmount" class="form-input prefix-padding" step="0.01" min="0.01" placeholder="45.00" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="expenseDate">Expense Date <span class="req">*</span></label>
+                            <input type="date" id="expenseDate" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="expenseDesc">Description / Note</label>
+                        <textarea id="expenseDesc" class="form-textarea" rows="2" placeholder="Resource tier, cluster ID, or project environment details..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeExpenseModal()">Cancel</button>
+                    <button type="submit" id="btnSubmitExpense" class="btn btn-primary">Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Adjust Budget Modal -->
+    <div id="budgetModal" class="modal-backdrop hidden">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-header">
+                <h3 class="modal-title">Adjust Monthly Budget</h3>
+                <button type="button" class="btn-close" onclick="closeBudgetModal()">&times;</button>
+            </div>
+            <form id="budgetForm" onsubmit="handleBudgetSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="budgetInput">Monthly Budget Limit (USD) <span class="req">*</span></label>
+                        <div class="input-prefix-wrapper">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="budgetInput" class="form-input prefix-padding" step="50" min="10" placeholder="5000" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeBudgetModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Budget</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
