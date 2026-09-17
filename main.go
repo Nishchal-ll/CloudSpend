@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	// Initialize SQLite Database
+	// Initialize SQLite Database & Seed Data
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatalf("Fatal: Database initialization failed: %v", err)
@@ -38,24 +38,38 @@ func main() {
 		})
 	})
 
-	// Web UI Routes (Go HTML Templates)
-	router.GET("/", handlers.RenderDashboard)
-	router.GET("/expenses", handlers.RenderExpenses)
+	// Public Web UI Routes
+	router.GET("/", handlers.RenderLanding)
+	router.GET("/login", handlers.RenderLogin)
+	router.GET("/logout", handlers.LogoutHandler)
 
-	// REST API Routes
-	api := router.Group("/api")
+	// Public Auth API
+	router.POST("/api/auth/login", handlers.LoginHandler)
+	router.POST("/api/auth/logout", handlers.LogoutHandler)
+
+	// Protected Web & API Routes
+	authorized := router.Group("/")
+	authorized.Use(handlers.AuthRequiredMiddleware())
 	{
-		// Dashboard & Budget
-		api.GET("/dashboard", handlers.DashboardStatsHandler)
-		api.GET("/budget", handlers.GetBudgetHandler)
-		api.POST("/budget", handlers.UpdateBudgetHandler)
+		// Protected Pages
+		authorized.GET("/dashboard", handlers.RenderDashboard)
+		authorized.GET("/expenses", handlers.RenderExpenses)
 
-		// Expenses CRUD
-		api.GET("/expenses", handlers.ListExpensesHandler)
-		api.GET("/expenses/:id", handlers.GetExpenseHandler)
-		api.POST("/expenses", handlers.CreateExpenseHandler)
-		api.PUT("/expenses/:id", handlers.UpdateExpenseHandler)
-		api.DELETE("/expenses/:id", handlers.DeleteExpenseHandler)
+		// Protected REST API
+		api := authorized.Group("/api")
+		{
+			// Dashboard & Budget
+			api.GET("/dashboard", handlers.DashboardStatsHandler)
+			api.GET("/budget", handlers.GetBudgetHandler)
+			api.POST("/budget", handlers.UpdateBudgetHandler)
+
+			// Expenses CRUD
+			api.GET("/expenses", handlers.ListExpensesHandler)
+			api.GET("/expenses/:id", handlers.GetExpenseHandler)
+			api.POST("/expenses", handlers.CreateExpenseHandler)
+			api.PUT("/expenses/:id", handlers.UpdateExpenseHandler)
+			api.DELETE("/expenses/:id", handlers.DeleteExpenseHandler)
+		}
 	}
 
 	// Dynamic Port Binding for Azure App Service ($PORT / $WEBSITES_PORT)

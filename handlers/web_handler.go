@@ -7,21 +7,39 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// RenderDashboard handles GET /
+// RenderLanding handles GET /
+func RenderLanding(c *gin.Context) {
+	isLoggedIn := false
+	if cookie, err := c.Cookie(sessionCookieName); err == nil {
+		if _, ok := verifySessionToken(cookie); ok {
+			isLoggedIn = true
+		}
+	}
+
+	c.HTML(http.StatusOK, "landing.html", gin.H{
+		"title":      "CloudSpend — Cloud Expense & Budget Intelligence",
+		"isLoggedIn": isLoggedIn,
+	})
+}
+
+// RenderDashboard handles GET /dashboard
 func RenderDashboard(c *gin.Context) {
 	summary, err := models.GetDashboardSummary()
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "index.html", gin.H{
+		c.HTML(http.StatusInternalServerError, "dashboard.html", gin.H{
 			"error": "Failed to load dashboard data: " + err.Error(),
 			"page":  "dashboard",
 		})
 		return
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
+	user, _ := c.Get("currentUser")
+
+	c.HTML(http.StatusOK, "dashboard.html", gin.H{
 		"title":   "CloudSpend — Dashboard",
 		"page":    "dashboard",
 		"summary": summary,
+		"user":    user,
 	})
 }
 
@@ -41,9 +59,10 @@ func RenderExpenses(c *gin.Context) {
 
 	categories := []string{"All", "Compute", "Database", "Storage", "Networking", "Containers", "Monitoring", "DevOps", "Other"}
 	providers := []string{"Azure", "AWS", "GCP", "Cloudflare", "GitHub", "DigitalOcean", "Other"}
+	user, _ := c.Get("currentUser")
 
 	c.HTML(http.StatusOK, "expenses.html", gin.H{
-		"title":            "CloudSpend — Cloud Expense Tracker",
+		"title":            "CloudSpend — Expense Records",
 		"page":             "expenses",
 		"expenses":         expenses,
 		"categories":       categories,
@@ -51,5 +70,6 @@ func RenderExpenses(c *gin.Context) {
 		"selectedCategory": category,
 		"searchTerm":       search,
 		"expenseCount":     len(expenses),
+		"user":             user,
 	})
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 
 	_ "modernc.org/sqlite"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var DB *sql.DB
@@ -43,6 +44,14 @@ func InitDB() (*sql.DB, error) {
 
 func createTables() error {
 	schema := `
+	CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		email TEXT UNIQUE NOT NULL,
+		password_hash TEXT NOT NULL,
+		name TEXT NOT NULL DEFAULT 'Admin User',
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+
 	CREATE TABLE IF NOT EXISTS budgets (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		monthly_limit REAL NOT NULL DEFAULT 5000.0,
@@ -66,9 +75,31 @@ func createTables() error {
 }
 
 func seedDefaultData() error {
+	// Seed Admin User (admin@example.com / password123)
+	var userCount int
+	err := DB.QueryRow("SELECT COUNT(*) FROM users").Scan(&userCount)
+	if err != nil {
+		return err
+	}
+
+	if userCount == 0 {
+		hashedPass, err := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("failed to hash seed password: %w", err)
+		}
+		_, err = DB.Exec(`
+			INSERT INTO users (email, password_hash, name) 
+			VALUES (?, ?, ?)
+		`, "admin@example.com", string(hashedPass), "Admin User")
+		if err != nil {
+			return fmt.Errorf("failed to seed admin user: %w", err)
+		}
+		log.Println("Seeded default admin user: admin@example.com / password123")
+	}
+
 	// Seed budget if empty
 	var budgetCount int
-	err := DB.QueryRow("SELECT COUNT(*) FROM budgets").Scan(&budgetCount)
+	err = DB.QueryRow("SELECT COUNT(*) FROM budgets").Scan(&budgetCount)
 	if err != nil {
 		return err
 	}

@@ -6,51 +6,75 @@
     <title>{{ .title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-    <div class="app-wrapper">
-        <!-- Clean App Header -->
-        <header class="app-header">
-            <div class="app-brand">
-                <div class="brand-icon">
-                    <i class="fa-solid fa-cloud"></i>
-                </div>
-                <span class="brand-title">CloudSpend</span>
+<body class="dashboard-body">
+    <div class="sidebar-layout">
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a href="/dashboard" class="sidebar-brand">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <span class="brand-title">CloudSpend</span>
+                        <div class="brand-badge">Azure Edition</div>
+                    </div>
+                </a>
+
+                <nav class="sidebar-nav">
+                    <div class="nav-section-title">Navigation</div>
+                    <a href="/dashboard" class="nav-item">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/expenses" class="nav-item active">
+                        <i class="fa-solid fa-table-list"></i>
+                        <span>Expenses</span>
+                    </a>
+
+                    <div class="nav-section-title">Actions</div>
+                    <button type="button" class="nav-item btn-nav-action" onclick="openExpenseModal()">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Add Expense</span>
+                    </button>
+                </nav>
             </div>
 
-            <nav class="header-nav">
-                <a href="/" class="nav-tab">
-                    <i class="fa-solid fa-gauge-high"></i> Dashboard
-                </a>
-                <a href="/expenses" class="nav-tab active">
-                    <i class="fa-solid fa-table-list"></i> Expenses
-                </a>
-            </nav>
-
-            <div class="header-actions">
-                <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
-                    <i class="fa-solid fa-plus"></i> Add Expense
-                </button>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main>
-            <!-- Page Intro -->
-            <div class="page-intro">
-                <div>
-                    <h1>Expense <span class="grad-text">Records.</span></h1>
-                    <p>Track, filter, update, and manage line-item cloud infrastructure costs.</p>
+            <!-- Sidebar User Profile Footer -->
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div class="user-text">
+                        <div class="user-name">{{ if .user }}{{ .user.Name }}{{ else }}Admin User{{ end }}</div>
+                        <div class="user-email">{{ if .user }}{{ .user.Email }}{{ else }}admin@example.com{{ end }}</div>
+                    </div>
                 </div>
+                <a href="/logout" class="btn-logout" title="Sign out">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-viewport">
+            <!-- Top Action Header -->
+            <header class="content-header">
                 <div>
-                    <button class="btn btn-primary" onclick="openExpenseModal()">
+                    <div class="breadcrumb">Overview / Expenses</div>
+                    <h1 class="header-title">Expense Records & Management</h1>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary btn-sm" onclick="openExpenseModal()">
                         <i class="fa-solid fa-plus"></i> Add New Expense
                     </button>
                 </div>
-            </div>
+            </header>
 
             <!-- Search & Category Filters -->
             <div class="card" style="margin-bottom:1.5rem;padding:1.25rem;">
@@ -58,7 +82,7 @@
                     <!-- Search Input -->
                     <div class="search-input-wrap">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" name="search" id="searchInput" class="search-field" placeholder="Search by service name, provider, notes..." value="{{ .searchTerm }}">
+                        <input type="text" name="search" id="searchInput" class="search-field" placeholder="Search by service name, provider, description..." value="{{ .searchTerm }}">
                     </div>
 
                     <div style="display:flex;align-items:center;gap:0.5rem;">
@@ -105,7 +129,7 @@
                             {{ if .expenses }}
                                 {{ range .expenses }}
                                 <tr id="expense-row-{{ .ID }}">
-                                    <td class="font-mono" style="color:var(--muted);font-size:0.8rem;">#{{ .ID }}</td>
+                                    <td class="font-mono text-muted" style="font-size:0.8rem;">#{{ .ID }}</td>
                                     <td>
                                         <div class="service-title">{{ .Title }}</div>
                                         {{ if .Description }}
@@ -114,8 +138,8 @@
                                     </td>
                                     <td><span class="prov-tag">{{ .Provider }}</span></td>
                                     <td><span class="tag-pill">{{ .Category }}</span></td>
-                                    <td class="font-mono" style="font-size:0.85rem;">{{ .ExpenseDate }}</td>
-                                    <td class="cost-amount">${{ printf "%.2f" .Amount }}</td>
+                                    <td class="font-mono text-muted text-sm">{{ .ExpenseDate }}</td>
+                                    <td class="cost-amount font-mono">${{ printf "%.2f" .Amount }}</td>
                                     <td style="text-align:right;">
                                         <div style="display:inline-flex;gap:0.35rem;">
                                             <button type="button" class="btn-action" title="Edit Expense" onclick="openEditModal({{ .ID }}, '{{ .Title }}', '{{ .Provider }}', '{{ .Category }}', {{ .Amount }}, '{{ .ExpenseDate }}', '{{ .Description }}')">
