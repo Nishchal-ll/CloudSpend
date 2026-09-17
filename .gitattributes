@@ -1,0 +1,11 @@
+# ==============================================================================
+# GitHub Linguist Language Overrides
+# Ensures Go is displayed as the primary project language on GitHub
+# ==============================================================================
+
+# Exclude server-side HTML templates and static CSS/JS assets from repository language stats
+templates/** linguist-detectable=false
+static/** linguist-detectable=false
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+*.js linguist-detectable=false
