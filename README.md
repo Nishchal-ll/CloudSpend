@@ -158,3 +158,8 @@ docker push cloudspend.azurecr.io/cloudspend:v1
 
 ## 📜 License
 MIT License © 2026 [Nishchal Acharya](https://github.com/Nishchal-ll)
+
+
+## Author
+- **Nishchal Acharya** - [Portfolio & Projects](https://www.acharyanishchal.com.np)
+
